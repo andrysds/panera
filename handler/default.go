@@ -9,4 +9,6 @@ func HandleDefault(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	defaultMessage := "Hello World! Panera here."
 	message := tgbotapi.NewMessage(update.Message.Chat.ID, defaultMessage)
 	helper.SendMessage(bot, message)
+	message = tgbotapi.NewMessage(update.Message.Chat.ID, string(update.Message.Chat.ID))
+	helper.SendMessage(bot, message)
 }
