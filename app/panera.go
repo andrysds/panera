@@ -3,6 +3,7 @@ package app
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/andrysds/panera/handler"
 	"github.com/andrysds/panera/helper"
@@ -10,19 +11,24 @@ import (
 )
 
 type Panera struct {
-	Bot     *tgbotapi.BotAPI
-	Updates <-chan tgbotapi.Update
+	Bot      *tgbotapi.BotAPI
+	Updates  <-chan tgbotapi.Update
+	MasterId int64
+	ChatId   int64
 }
 
 func NewPanera() *Panera {
 	botToken := os.Getenv("BOT_TOKEN")
 	bot := NewBot(botToken)
-
 	updates := NewUpdates(bot)
+	masterId, _ := strconv.Atoi(os.Getenv("MASTER_ID"))
+	chatId, _ := strconv.Atoi(os.Getenv("CHAT_ID"))
 
 	return &Panera{
-		Bot:     bot,
-		Updates: updates,
+		Bot:      bot,
+		Updates:  updates,
+		MasterId: int64(masterId),
+		ChatId:   int64(chatId),
 	}
 }
 
