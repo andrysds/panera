@@ -19,12 +19,6 @@ func CheckAndFatal(err error) {
 	}
 }
 
-func GetMessage(filename string) string {
-	message, err := ioutil.ReadFile(filename)
-	Check(err)
-	return string(message)
-}
-
 func LogMessage(message *tgbotapi.Message) {
 	log.Printf("[%s] %s", message.From.UserName, message.Text)
 }
