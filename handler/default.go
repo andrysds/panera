@@ -1,16 +1,12 @@
 package handler
 
 import (
-	"math/rand"
-	"strings"
-
 	"github.com/andrysds/panera/helper"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func HandleDefault(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
-	defaultMessage := pickDefaultMessage()
+	defaultMessage := "Hello World! Panera here."
 	message := tgbotapi.NewMessage(update.Message.Chat.ID, defaultMessage)
-
-	helper.SendMessage(bot, "Hello World! Panera here.")
+	helper.SendMessage(bot, message)
 }

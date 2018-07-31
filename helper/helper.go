@@ -1,7 +1,6 @@
 package helper
 
 import (
-	"io/ioutil"
 	"log"
 
 	"gopkg.in/telegram-bot-api.v4"
