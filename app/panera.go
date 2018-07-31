@@ -1,12 +1,11 @@
 package app
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"strconv"
 
-	"github.com/andrysds/panera/handler"
-	"github.com/andrysds/panera/helper"
+	"github.com/andrysds/clarity/errutil"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -34,8 +33,8 @@ func NewPanera() *Panera {
 
 func NewBot(botToken string) *tgbotapi.BotAPI {
 	bot, err := tgbotapi.NewBotAPI(botToken)
-	helper.CheckAndFatal(err)
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	errutil.PanicIfError(err, "error on creating bot api")
+	fmt.Println("Authorized on account %s", bot.Self.UserName)
 	return bot
 }
 
@@ -43,20 +42,6 @@ func NewUpdates(bot *tgbotapi.BotAPI) <-chan tgbotapi.Update {
 	webhookUrl := os.Getenv("WEBHOOK_URL")
 	webhook := tgbotapi.NewWebhook(webhookUrl + bot.Token)
 	_, err := bot.SetWebhook(webhook)
-	helper.CheckAndFatal(err)
+	errutil.PanicIfError(err, "error on setting bot webhook")
 	return bot.ListenForWebhook("/" + bot.Token)
-}
-
-func (b *Panera) Run() {
-	for update := range b.Updates {
-		if update.Message == nil {
-			continue
-		}
-		helper.LogMessage(update.Message)
-
-		switch update.Message.Text {
-		default:
-			handler.HandleDefault(b.Bot, update)
-		}
-	}
 }

@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/andrysds/clarity"
+  packages = ["errutil"]
+  revision = "ed4cbc739e90e8b30e7c6e024a80d7af29c098c6"
+
+[[projects]]
   name = "github.com/technoweenie/multipartstreamer"
   packages = ["."]
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
@@ -16,6 +22,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4b9443e1dfa05d9e3b47f80f1a69cefe00fa167704b0bf9a05d86796a30df851"
+  inputs-digest = "03736afb0076ab8c85d45c21e1495e0c22e9281bb73638232eb5e81da9cfc7e4"
   solver-name = "gps-cdcl"
   solver-version = 1
