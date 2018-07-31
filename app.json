@@ -1,0 +1,12 @@
+{
+  "name": "pnr_bot",
+  "description": "bot for pnr_bot squad",
+  "keywords": [
+    "pnr_bot",
+    "go",
+    "andrys"
+  ],
+  "image": "heroku/go:1.6",
+  "mount_dir": "src/github.com/heroku/pnr_bot",
+  "repository": "http://github.com/andrysds/pnr_bot"
+}

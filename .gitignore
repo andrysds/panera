@@ -1,0 +1,6 @@
+.env
+.tags
+bluebiru
+
+.docker_build/
+vendor/
