@@ -11,7 +11,7 @@ func (p *Panera) HandleGroupInvitation(update *tgbotapi.Update) {
 		return
 	}
 	messageText := "I was invited to " + strconv.FormatInt(p.ChatId, 10)
-	message := tgbotapi.NewMessage(update.Message.Chat.ID, messageText)
+	message := tgbotapi.NewMessage(p.MasterId, messageText)
 	p.SendMessage(message)
 }
 
