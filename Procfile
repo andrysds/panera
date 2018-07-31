@@ -1,1 +1,1 @@
-web: pnr_bot
+web: panera

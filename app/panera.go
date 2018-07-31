@@ -4,23 +4,23 @@ import (
 	"log"
 	"os"
 
-	"github.com/andrysds/pnr_bot/handler"
-	"github.com/andrysds/pnr_bot/helper"
+	"github.com/andrysds/panera/handler"
+	"github.com/andrysds/panera/helper"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-type PnrBot struct {
+type Panera struct {
 	Bot     *tgbotapi.BotAPI
 	Updates <-chan tgbotapi.Update
 }
 
-func NewPnrBot() *PnrBot {
+func NewPanera() *Panera {
 	botToken := os.Getenv("BOT_TOKEN")
 	bot := NewBot(botToken)
 
 	updates := NewUpdates(bot)
 
-	return &PnrBot{
+	return &Panera{
 		Bot:     bot,
 		Updates: updates,
 	}
@@ -41,7 +41,7 @@ func NewUpdates(bot *tgbotapi.BotAPI) <-chan tgbotapi.Update {
 	return bot.ListenForWebhook("/" + bot.Token)
 }
 
-func (b *PnrBot) Run() {
+func (b *Panera) Run() {
 	for update := range b.Updates {
 		if update.Message == nil {
 			continue

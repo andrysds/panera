@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/andrysds/pnr_bot/helper"
+	"github.com/andrysds/panera/helper"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
