@@ -1,7 +1,6 @@
 package helper
 
 import (
-	"io/ioutil"
 	"log"
 
 	"gopkg.in/telegram-bot-api.v4"
@@ -17,12 +16,6 @@ func CheckAndFatal(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func GetMessage(filename string) string {
-	message, err := ioutil.ReadFile(filename)
-	Check(err)
-	return string(message)
 }
 
 func LogMessage(message *tgbotapi.Message) {
