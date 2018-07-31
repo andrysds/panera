@@ -20,8 +20,7 @@ dep:
 	dep ensure -v
 
 pretty:
-	gofmt -w *.go
-	gofmt -w **/*.go
+	gofmt -w .
 
 build:
 	go build -o panera .
