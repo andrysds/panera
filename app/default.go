@@ -7,3 +7,8 @@ func (p *Panera) HandleDefault(update *tgbotapi.Update) {
 	message := tgbotapi.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
 }
+
+func (p *Panera) HandleMasterMessage(update *tgbotapi.Update) {
+	message := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+	p.SendMessage(message)
+}

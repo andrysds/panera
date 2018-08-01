@@ -15,6 +15,8 @@ func (p *Panera) Run() {
 			case "standup":
 				p.HandleStandup(&update)
 			}
+		case update.Message.Chat.ID == p.MasterId:
+			p.HandleMasterMessage(&update)
 		default:
 			p.HandleDefault(&update)
 		}
