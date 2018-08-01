@@ -17,8 +17,6 @@ func (p *Panera) Run() {
 			}
 		case update.Message.Chat.ID == p.MasterId:
 			p.HandleMasterMessage(&update)
-		default:
-			p.HandleDefault(&update)
 		}
 	}
 }
