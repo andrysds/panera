@@ -8,11 +8,11 @@ import (
 )
 
 func (p *Panera) HandleStandup(update *tgbotapi.Update) {
-	messageText := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah"
+	messageText := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah "
 	for _, data := range dataExamples {
 		person := strings.Split(data, ":")
 		if person[2] == "0" {
-			messageText += fmt.Sprintf("*%s* (%s)", person[1], person[0])
+			messageText += fmt.Sprintf("_%s_ (@%s)", person[0], person[1])
 			break
 		}
 	}
@@ -21,7 +21,7 @@ func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 }
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
-	messageText := "Giliran stand up lead:"
+	messageText := "Giliran stand up lead:\n"
 	for _, data := range dataExamples {
 		person := strings.Split(data, ":")
 		if person[2] == "1" {
