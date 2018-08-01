@@ -23,7 +23,9 @@ func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
 		}
 		messageText += person[0] + "\n"
 	}
+
 	message := tgbotapi.NewMessage(update.Message.Chat.ID, messageText)
+	message.ParseMode = "markdown"
 	p.SendMessage(message)
 }
 
