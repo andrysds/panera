@@ -1,31 +1,38 @@
 package app
 
 import (
+	"fmt"
 	"strings"
 
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (p *Panera) HandleStandup(update *tgbotapi.Update) {
-	messageText := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah Yohanes"
-	message := tgbotapi.NewMessage(update.Message.Chat.ID, messageText)
+	messageText := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah"
+	for _, data := range dataExamples {
+		person := strings.Split(data, ":")
+		if person[2] == "0" {
+			messageText += fmt.Sprintf("*%s* (%s)", person[1], person[0])
+			break
+		}
+	}
+	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
 }
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
-	messageText := ""
+	messageText := "Giliran stand up lead:"
 	for _, data := range dataExamples {
 		person := strings.Split(data, ":")
 		if person[2] == "1" {
-			messageText += "`[x]`"
+			messageText += "`[x]` "
 		} else {
-			messageText += "`[ ]`"
+			messageText += "`[ ]` "
 		}
 		messageText += person[0] + "\n"
 	}
 
-	message := tgbotapi.NewMessage(update.Message.Chat.ID, messageText)
-	message.ParseMode = "markdown"
+	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
 }
 
