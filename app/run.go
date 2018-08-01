@@ -10,6 +10,11 @@ func (p *Panera) Run() {
 		switch {
 		case update.Message.NewChatMembers != nil:
 			p.HandleGroupInvitation(&update)
+		case update.Message.IsCommand():
+			switch update.Message.Command() {
+			case "standup":
+				p.HandleStandup(&update)
+			}
 		default:
 			p.HandleDefault(&update)
 		}
