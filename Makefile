@@ -9,9 +9,6 @@ $(DOCKER_CMD): clean
 clean:
 	rm -rf $(DOCKER_BUILD)
 
-compile:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o panera .
-
 heroku: $(DOCKER_CMD)
 	heroku container:push web
 
@@ -22,5 +19,5 @@ dep:
 pretty:
 	gofmt -w .
 
-build:
+compile:
 	go build -o panera .

@@ -14,6 +14,8 @@ func (p *Panera) Run() {
 			switch update.Message.Command() {
 			case "standup":
 				p.HandleStandup(&update)
+			case "standup_list":
+				p.HandleStandupList(&update)
 			}
 		case update.Message.Chat.ID == p.MasterId:
 			p.HandleMasterMessage(&update)

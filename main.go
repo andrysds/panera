@@ -13,6 +13,7 @@ func main() {
 	go http.ListenAndServe(":"+port, nil)
 
 	db.InitRedis()
+	defer db.Redis.Close()
 
 	panera := app.NewPanera()
 	panera.Run()
