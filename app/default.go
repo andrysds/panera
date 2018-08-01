@@ -9,6 +9,6 @@ func (p *Panera) HandleDefault(update *tgbotapi.Update) {
 }
 
 func (p *Panera) HandleMasterMessage(update *tgbotapi.Update) {
-	message := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+	message := tgbotapi.NewMessage(p.ChatId, update.Message.Text)
 	p.SendMessage(message)
 }
