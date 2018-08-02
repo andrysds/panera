@@ -10,10 +10,10 @@ import (
 var Redis *redis.Client
 
 func InitRedis() {
-	client := redis.NewClient(&redis.Options{
-		Addr: os.Getenv("REDIS_URL"),
-	})
-	_, err := client.Ping().Result()
+	options, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+	errutil.PanicIfError(err, "error on parsing redis url")
+	client := redis.NewClient(options)
+	_, err = client.Ping().Result()
 	errutil.PanicIfError(err, "error on connecting to redis")
 	Redis = client
 }

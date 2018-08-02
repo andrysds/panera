@@ -23,6 +23,12 @@
   version = "v6.13.2"
 
 [[projects]]
+  name = "github.com/subosito/gotenv"
+  packages = ["."]
+  revision = "69b5b6104433beb2cb9c3ce00bdadf3c7c2d3f34"
+  version = "v1.1.1"
+
+[[projects]]
   name = "github.com/technoweenie/multipartstreamer"
   packages = ["."]
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
@@ -37,6 +43,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8895bad9c0af08be9ec7f31fd9d91239499e3af0907b1d8ec506d94f005e4549"
+  inputs-digest = "92adc0198bec9f5a54a15312242627ecf0f7055543faf9baa454af8376eb93b3"
   solver-name = "gps-cdcl"
   solver-version = 1

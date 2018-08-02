@@ -6,9 +6,11 @@ import (
 
 	"github.com/andrysds/panera/app"
 	"github.com/andrysds/panera/db"
+	"github.com/subosito/gotenv"
 )
 
 func main() {
+	gotenv.Load()
 	port := os.Getenv("PORT")
 	go http.ListenAndServe(":"+port, nil)
 
