@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 
+	"github.com/andrysds/clarity/errutil"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -18,5 +19,5 @@ func (p *Panera) LogMessage(message *tgbotapi.Message) {
 
 func (p *Panera) SendMessage(message tgbotapi.MessageConfig) {
 	_, err := p.Bot.Send(message)
-	fmt.Println(err)
+	errutil.PrintIfError(err, "error on sending message")
 }

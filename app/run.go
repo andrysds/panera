@@ -7,6 +7,7 @@ func (p *Panera) Run() {
 		}
 		p.LogMessage(update.Message)
 
+		// public
 		switch {
 		case update.Message.NewChatMembers != nil:
 			p.HandleGroupInvitation(&update)
@@ -17,7 +18,10 @@ func (p *Panera) Run() {
 			case "standup_list":
 				p.HandleStandupList(&update)
 			}
-		case update.Message.Chat.ID == p.MasterId:
+		}
+
+		// master
+		if update.Message.Chat.ID == p.MasterId {
 			if update.Message.IsCommand() {
 				switch update.Message.Command() {
 				case "init_standup":
