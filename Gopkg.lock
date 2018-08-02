@@ -8,13 +8,19 @@
   revision = "ed4cbc739e90e8b30e7c6e024a80d7af29c098c6"
 
 [[projects]]
-  name = "github.com/gomodule/redigo"
+  name = "github.com/go-redis/redis"
   packages = [
+    ".",
     "internal",
-    "redis"
+    "internal/consistenthash",
+    "internal/hashtag",
+    "internal/pool",
+    "internal/proto",
+    "internal/singleflight",
+    "internal/util"
   ]
-  revision = "9c11da706d9b7902c6da69c592f75637793fe121"
-  version = "v2.0.0"
+  revision = "480db94d33e6088e08d628833b6c0705451d24bb"
+  version = "v6.13.2"
 
 [[projects]]
   name = "github.com/technoweenie/multipartstreamer"
@@ -31,6 +37,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "be2b6e370257f20324bfb9180f1779a2b27291c5ca3fc30b04ebc6077e443014"
+  inputs-digest = "8895bad9c0af08be9ec7f31fd9d91239499e3af0907b1d8ec506d94f005e4549"
   solver-name = "gps-cdcl"
   solver-version = 1
