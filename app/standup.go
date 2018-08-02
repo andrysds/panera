@@ -43,7 +43,7 @@ var dataExamples = []string{
 	"Setia:setiasimaremare:1",
 	"Rifa:rifaMukhlisa:1",
 	"Yohanes:yohanes77:1",
-	"Regina:regina_avena:0",
+	"Regina:regina\\_avena:0",
 	"Ben:benlemueltanasale:0",
 	"Farida:faridaamila:0",
 	"Adimas:addimas:0",
