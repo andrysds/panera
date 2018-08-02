@@ -49,4 +49,5 @@ var dataExamples = []string{
 	"Adimas:addimas:0",
 	"Andrys:andrysds:0",
 	"Ai:ayshzkh:0",
+	"Luthfi:luthfift:0",
 }
