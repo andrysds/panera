@@ -21,7 +21,7 @@ func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 }
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
-	messageText := "Giliran stand up lead:\n"
+	messageText := "Stand up lead periode ini:\n"
 	for _, data := range dataExamples {
 		person := strings.Split(data, ":")
 		if person[2] == "1" {
