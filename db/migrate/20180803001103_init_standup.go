@@ -28,7 +28,7 @@ func InitStandup() string {
 	}
 
 	for _, d := range initData {
-		_, err = db.Redis.LPush(entity.StandupKey, d).Result()
+		_, err = db.Redis.RPush(entity.StandupKey, d).Result()
 		if err != nil {
 			return err.Error()
 		}
