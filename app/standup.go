@@ -2,52 +2,37 @@ package app
 
 import (
 	"fmt"
-	"strings"
 
+	"github.com/andrysds/clarity/errutil"
+	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (p *Panera) HandleStandup(update *tgbotapi.Update) {
-	messageText := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah "
-	for _, data := range dataExamples {
-		person := strings.Split(data, ":")
-		if person[2] == "0" {
-			messageText += fmt.Sprintf("_%s_ (@%s)", person[0], person[1])
-			break
-		}
-	}
+	standup, err := entity.GetStandup()
+	errutil.PrintIfError(err, "error on get standup")
+
+	messageTemplate := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah _%s_ (@%s)"
+	messageText := fmt.Sprintf(messageTemplate, standup.Name, standup.Username)
+
 	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
 }
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
+	standups, err := entity.GetStandupList()
+	errutil.PrintIfError(err, "error on get standup list")
+
 	messageText := "Stand up lead periode ini:\n"
-	for _, data := range dataExamples {
-		person := strings.Split(data, ":")
-		if person[2] == "1" {
+	for _, s := range standups {
+		if s.HasDone {
 			messageText += "`[x]` "
 		} else {
 			messageText += "`[ ]` "
 		}
-		messageText += person[0] + "\n"
+		messageText += s.Name + "\n"
 	}
 
 	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
-}
-
-var dataExamples = []string{
-	"Herry:herrydev:1",
-	"Olvi:olvilora:1",
-	"Isti:tianaulia:1",
-	"Setia:setiasimaremare:1",
-	"Rifa:rifaMukhlisa:1",
-	"Yohanes:yohanes77:1",
-	"Regina:regina\\_avena:0",
-	"Ben:benlemueltanasale:0",
-	"Farida:faridaamila:0",
-	"Adimas:addimas:0",
-	"Andrys:andrysds:0",
-	"Ai:ayshzkh:0",
-	"Luthfi:luthfift:0",
 }

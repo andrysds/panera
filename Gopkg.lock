@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/andrysds/clarity"
   packages = ["errutil"]
-  revision = "ed4cbc739e90e8b30e7c6e024a80d7af29c098c6"
+  revision = "93c1f484c36cccc24715c0cc8282551e039db989"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/go-redis/redis"
