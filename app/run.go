@@ -26,6 +26,8 @@ func (p *Panera) Run() {
 				switch update.Message.Command() {
 				case "init_standup":
 					p.HandleInitStandup(&update)
+				case "init_standup_list":
+					p.HandleInitStandup(&update)
 				}
 			} else {
 				p.HandleMasterMessage(&update)

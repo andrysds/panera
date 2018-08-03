@@ -5,7 +5,7 @@ import (
 	"github.com/andrysds/panera/entity"
 )
 
-func InitStandupList() string {
+func InitStandup() string {
 	_, err := db.Redis.Del(entity.StandupKey).Result()
 	if err != nil {
 		return err.Error()
