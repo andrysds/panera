@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/andrysds/clarity"
   packages = ["."]
-  revision = "931ac5b33eaa51bf4f617cb7ee98eea9704af35b"
-  version = "v1.2.0"
+  revision = "24fe90369e6028d6f445ad65955c2391a57e620a"
+  version = "v2.0.1"
 
 [[projects]]
   name = "github.com/go-redis/redis"
