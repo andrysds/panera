@@ -30,20 +30,6 @@ func NewStandup(data string) *Standup {
 }
 
 func GetStandup() (*Standup, error) {
-	standupList, err := GetStandupList()
-	for _, s := range standupList {
-		if !s.HasDone {
-			return s, err
-		}
-	}
-	return &Standup{}, err
-}
-
-func GetStandupList() ([]*Standup, error) {
-	result, err := db.Redis.LRange(StandupKey, 0, -1).Result()
-	standupList := []*Standup{}
-	for _, r := range result {
-		standupList = append(standupList, NewStandup(r))
-	}
-	return standupList, err
+	standup, err := db.Redis.Get(StandupListKey).Result()
+	return NewStandup(standup), err
 }

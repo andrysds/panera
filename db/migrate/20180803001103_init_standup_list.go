@@ -13,22 +13,22 @@ func InitStandup() string {
 		"Setia:setiasimaremare:1",
 		"Rifa:rifaMukhlisa:1",
 		"Yohanes:yohanes77:1",
+		"Farida:faridaamila:1",
 		"Regina:regina\\_avena:0",
 		"Ben:benlemueltanasale:0",
-		"Farida:faridaamila:0",
 		"Adimas:addimas:0",
 		"Andrys:andrysds:0",
 		"Ai:ayshzkh:0",
 		"Luthfi:luthfift:0",
 	}
 
-	_, err := db.Redis.Del(entity.StandupKey).Result()
+	_, err := db.Redis.Del(entity.StandupListKey).Result()
 	if err != nil {
 		return err.Error()
 	}
 
 	for _, d := range initData {
-		_, err = db.Redis.RPush(entity.StandupKey, d).Result()
+		_, err = db.Redis.RPush(entity.StandupListKey, d).Result()
 		if err != nil {
 			return err.Error()
 		}
