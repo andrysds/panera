@@ -3,7 +3,7 @@
 
 [[projects]]
   name = "github.com/andrysds/clarity"
-  packages = ["errutil"]
+  packages = ["."]
   revision = "931ac5b33eaa51bf4f617cb7ee98eea9704af35b"
   version = "v1.2.0"
 
@@ -43,6 +43,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "92adc0198bec9f5a54a15312242627ecf0f7055543faf9baa454af8376eb93b3"
+  inputs-digest = "e1841ae6bdaa69827b60ebfd232b7b49ea4210125cca377be87073c703eac5f8"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/andrysds/clarity/errutil"
+	"github.com/andrysds/clarity"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -33,7 +33,7 @@ func NewPanera() *Panera {
 
 func NewBot(botToken string) *tgbotapi.BotAPI {
 	bot, err := tgbotapi.NewBotAPI(botToken)
-	errutil.PanicIfError(err, "error on creating bot api")
+	clarity.PanicIfError(err, "error on creating bot api")
 	fmt.Println("Authorized on account %s", bot.Self.UserName)
 	return bot
 }
@@ -42,6 +42,6 @@ func NewUpdates(bot *tgbotapi.BotAPI) <-chan tgbotapi.Update {
 	webhookUrl := os.Getenv("WEBHOOK_URL")
 	webhook := tgbotapi.NewWebhook(webhookUrl + bot.Token)
 	_, err := bot.SetWebhook(webhook)
-	errutil.PanicIfError(err, "error on setting bot webhook")
+	clarity.PanicIfError(err, "error on setting bot webhook")
 	return bot.ListenForWebhook("/" + bot.Token)
 }

@@ -3,14 +3,14 @@ package app
 import (
 	"fmt"
 
-	"github.com/andrysds/clarity/errutil"
+	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 	standup, err := entity.GetStandup()
-	errutil.PrintIfError(err, "error on get standup")
+	clarity.PrintIfError(err, "error on get standup")
 
 	messageTemplate := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah _%s_ (@%s)"
 	messageText := fmt.Sprintf(messageTemplate, standup.Name, standup.Username)
@@ -21,7 +21,7 @@ func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
 	standups, err := entity.GetStandupList()
-	errutil.PrintIfError(err, "error on get standup list")
+	clarity.PrintIfError(err, "error on get standup list")
 
 	messageText := "Stand up lead periode ini:\n"
 	for _, s := range standups {
