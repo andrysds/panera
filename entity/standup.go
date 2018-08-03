@@ -30,6 +30,6 @@ func NewStandup(data string) *Standup {
 }
 
 func GetStandup() (*Standup, error) {
-	standup, err := db.Redis.Get(StandupListKey).Result()
+	standup, err := db.Redis.Get(StandupKey).Result()
 	return NewStandup(standup), err
 }
