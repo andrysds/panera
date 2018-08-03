@@ -27,7 +27,7 @@ func (p *Panera) Run() {
 				case "init_standup":
 					p.HandleInitStandup(&update)
 				case "init_standup_list":
-					p.HandleInitStandup(&update)
+					p.HandleInitStandupList(&update)
 				}
 			} else {
 				p.HandleMasterMessage(&update)
