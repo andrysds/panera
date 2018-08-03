@@ -11,25 +11,29 @@ const StandupKey = "panera:standup"
 type Standup struct {
 	Name     string
 	Username string
-	HasDone  bool
+	State    string
 }
 
 func NewStandup(data string) *Standup {
-	standup := strings.Split(data, ":")
-
-	hasDone := false
-	if standup[2] == "1" {
-		hasDone = true
+	res := strings.Split(data, ":")
+	standup := &Standup{}
+	if len(res) == 3 {
+		standup.Name = res[0]
+		standup.Username = res[1]
+		standup.State = res[2]
 	}
-
-	return &Standup{
-		Name:     standup[0],
-		Username: standup[1],
-		HasDone:  hasDone,
-	}
+	return standup
 }
 
 func GetStandup() (*Standup, error) {
-	standup, err := db.Redis.Get(StandupKey).Result()
-	return NewStandup(standup), err
+	current, err := db.Redis.Get(StandupKey).Int64()
+	if err != nil {
+		return nil, err
+	}
+	data, err := db.Redis.LRange(StandupListKey, current, current).Result()
+	standup := &Standup{}
+	if len(data) == 1 {
+		standup = NewStandup(data[0])
+	}
+	return standup, err
 }

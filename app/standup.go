@@ -25,7 +25,7 @@ func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
 
 	messageText := "Stand up lead periode ini:\n"
 	for _, s := range standups {
-		if s.HasDone {
+		if s.State == "1" {
 			messageText += "`[x]` "
 		} else {
 			messageText += "`[ ]` "

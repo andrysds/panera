@@ -11,8 +11,7 @@ func InitStandup() string {
 		return err.Error()
 	}
 
-	data := "Regina:regina\\_avena:0"
-	_, err = db.Redis.Set(entity.StandupKey, data, 0).Result()
+	_, err = db.Redis.Set(entity.StandupKey, 6, 0).Result()
 	if err != nil {
 		return err.Error()
 	}
