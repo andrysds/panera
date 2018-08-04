@@ -16,15 +16,9 @@ func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 	switch command {
 	case "healthz":
 		message = handler.NewMessage(0, handler.OKMessage)
-	case "standup":
-		message = handler.HandleStandup(0)
-	case "standup_list":
-		message = handler.HandleStandupList(0)
-	case "standup_skip":
-		message = handler.HandleStandupSkip(0)
 	default:
 		if err := w.BasicAuthorizer.Authorize(r.Header); err == nil {
-			message = handler.HandleMasterCommand(command)
+			message = handler.HandleCommand(0, command)
 		} else {
 			message = handler.NewMessage(0, handler.UnauthorizedMessage)
 

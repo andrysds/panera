@@ -41,3 +41,12 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	}
 	return nil
 }
+
+func (b *Bot) Run(started chan<- bool) {
+	log.Println("* [bot] Listening from webhook")
+	started <- true
+
+	for update := range b.Updates {
+		b.Handle(&update)
+	}
+}
