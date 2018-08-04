@@ -79,7 +79,7 @@ func StandupNewDay() string {
 		return err.Error()
 	}
 
-	if _, err := db.Redis.Set(StandupKey, 6, 0).Result(); err != nil {
+	if _, err := db.Redis.Set(StandupKey, 0, 0).Result(); err != nil {
 		return err.Error()
 	}
 

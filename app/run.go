@@ -20,15 +20,11 @@ func (p *Panera) Run() {
 			case "standup_skip":
 				p.HandleStandupSkip(&update)
 			}
-		}
-
-		// master
-		if update.Message.Chat.ID == p.MasterId {
-			if update.Message.IsCommand() {
+			if update.Message.Chat.ID == p.MasterId {
 				p.HandleMasterCommand(update.Message.Command())
-			} else {
-				p.HandleMasterMessage(&update)
 			}
+		case update.Message.Chat.ID == p.MasterId:
+			p.HandleMasterMessage(&update)
 		}
 	}
 }
