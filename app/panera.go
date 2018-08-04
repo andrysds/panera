@@ -34,7 +34,7 @@ func NewPanera() *Panera {
 func NewBot(botToken string) *tgbotapi.BotAPI {
 	bot, err := tgbotapi.NewBotAPI(botToken)
 	clarity.PanicIfError(err, "error on creating bot api")
-	fmt.Println("Authorized on account %s", bot.Self.UserName)
+	fmt.Printf("Authorized on account %s\n", bot.Self.UserName)
 	return bot
 }
 
