@@ -29,10 +29,10 @@ func (p *Panera) Run() {
 	for i := 0; i < 2; i++ {
 		<-started
 	}
-	p.Idle()
+	p.IDle()
 }
 
-func (p *Panera) Idle() {
+func (p *Panera) IDle() {
 	log.Println("Use Ctrl-C to stop")
 	for {
 	}

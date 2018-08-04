@@ -3,7 +3,8 @@ package web
 import (
 	"log"
 	"net/http"
-	"os"
+
+	"github.com/andrysds/panera/config"
 )
 
 type Web struct{}
@@ -14,12 +15,11 @@ func NewWeb() *Web {
 
 func (w *Web) Run(started chan<- bool) {
 	w.Route()
-	port := ":" + os.Getenv("PORT")
-	log.Println("* [web] Listening on tcp://0.0.0.0" + port)
+	log.Println("* [web] Listening on tcp://0.0.0.0" + config.Port)
 	started <- true
-	http.ListenAndServe(port, nil)
+	http.ListenAndServe(config.Port, nil)
 }
 
 func (w *Web) Route() {
-	http.HandleFunc("/healthz", w.HandleHealthz)
+	http.HandleFunc("/healthz", w.Healthz)
 }

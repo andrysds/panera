@@ -3,13 +3,12 @@ package bot
 import (
 	"log"
 
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (b *Bot) Run(started chan<- bool) {
-	b.BotAPI = NewBotAPI()
-	b.Updates = NewUpdates(b.BotAPI)
 	log.Println("* [bot] Listening from webhook")
 	started <- true
 
@@ -20,26 +19,27 @@ func (b *Bot) Run(started chan<- bool) {
 		b.LogMessage(update.Message)
 
 		var message *tgbotapi.MessageConfig
-		chatId := update.Message.Chat.ID
+		chatID := update.Message.Chat.ID
 
 		switch {
-		case update.Message.NewChatMembers != nil:
-			message = b.HandleGroupInvitation(&update)
+		case b.IsAddedToGroup(&update):
+			message = handler.HandleGroupInvitation(chatID)
 		case update.Message.IsCommand():
-			switch update.Message.Command() {
+			command := update.Message.Command()
+			switch command {
 			case "standup":
-				message = handler.HandleStandup(chatId)
+				message = handler.HandleStandup(chatID)
 			case "standup_list":
-				message = handler.HandleStandupList(chatId)
+				message = handler.HandleStandupList(chatID)
 			case "standup_skip":
-				message = handler.HandleStandupSkip(chatId)
+				message = handler.HandleStandupSkip(chatID)
 			default:
-				if chatId == b.MasterId {
-					message = handler.HandleMasterCommand(chatId, update.Message.Command())
+				if chatID == config.MasterID {
+					message = handler.HandleMasterCommand(command)
 				}
 			}
-		case chatId == b.MasterId:
-			b.HandleMasterMessage(&update)
+		case chatID == config.MasterID:
+			handler.HandleMasterMessage(&update)
 		}
 		b.SendMessage(message)
 	}

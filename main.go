@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/andrysds/panera/app"
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/db"
-	"github.com/subosito/gotenv"
 )
 
 func main() {
-	gotenv.Load()
+	config.Init()
 
 	db.InitRedis()
 	defer db.Redis.Close()

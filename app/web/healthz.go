@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func (w *Web) HandleHealthz(wr http.ResponseWriter, r *http.Request) {
+func (w *Web) Healthz(wr http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(wr, "HEALTHZ OK")
 }
