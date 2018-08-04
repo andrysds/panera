@@ -5,7 +5,7 @@ import (
 	"github.com/andrysds/panera/entity"
 )
 
-func InitStandupList() string {
+func StandupListInit() string {
 	initData := []string{
 		"Herry:herrydev:1",
 		"Olvi:olvilora:1",
@@ -34,5 +34,5 @@ func InitStandupList() string {
 		}
 	}
 
-	return "ok"
+	return "init_standup_list success"
 }

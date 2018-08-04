@@ -25,12 +25,7 @@ func (p *Panera) Run() {
 		// master
 		if update.Message.Chat.ID == p.MasterId {
 			if update.Message.IsCommand() {
-				switch update.Message.Command() {
-				case "init_standup":
-					p.HandleInitStandup(&update)
-				case "init_standup_list":
-					p.HandleInitStandupList(&update)
-				}
+				p.HandleMasterCommand(update.Message.Command())
 			} else {
 				p.HandleMasterMessage(&update)
 			}
