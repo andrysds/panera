@@ -29,8 +29,13 @@ func (p *Panera) HandleStandupSkip(update *tgbotapi.Update) {
 	newStandup, err := entity.SkipStandup(standups, standup.Order)
 	clarity.PrintIfError(err, "error on skipping standup")
 
-	messageTemplate := "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
-	messageText := fmt.Sprintf(messageTemplate, standup.Name, newStandup.Name, newStandup.Username)
+	messageText := ""
+	if newStandup != nil {
+		messageTemplate := "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
+		messageText = fmt.Sprintf(messageTemplate, standup.Name, newStandup.Name, newStandup.Username)
+	} else {
+		messageText = "Waduh ga ada gantinya lagi nih!"
+	}
 
 	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)
