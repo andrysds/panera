@@ -19,19 +19,18 @@ func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 	p.SendMessage(message)
 }
 
-func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
+func (p *Panera) HandleStandupSkip(update *tgbotapi.Update) {
+	standup, err := entity.GetStandup()
+	clarity.PrintIfError(err, "error on get standup")
+
 	standups, err := entity.GetStandupList()
 	clarity.PrintIfError(err, "error on get standup list")
 
-	messageText := "Stand up lead periode ini:\n"
-	for _, s := range standups {
-		if s.State == "1" {
-			messageText += "`[x]` "
-		} else {
-			messageText += "`[ ]` "
-		}
-		messageText += s.Name + "\n"
-	}
+	newStandup, err := entity.SkipStandup(standups, standup.Order)
+	clarity.PrintIfError(err, "error on skipping standup")
+
+	messageTemplate := "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
+	messageText := fmt.Sprintf(messageTemplate, standup.Name, newStandup.Name, newStandup.Username)
 
 	message := p.NewMessage(update.Message.Chat.ID, messageText)
 	p.SendMessage(message)

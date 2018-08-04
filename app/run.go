@@ -17,6 +17,8 @@ func (p *Panera) Run() {
 				p.HandleStandup(&update)
 			case "standup_list":
 				p.HandleStandupList(&update)
+			case "standup_skip":
+				p.HandleStandupSkip(&update)
 			}
 		}
 

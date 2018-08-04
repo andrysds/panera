@@ -11,8 +11,8 @@ type StandupList []*Standup
 func GetStandupList() (StandupList, error) {
 	result, err := db.Redis.LRange(StandupListKey, 0, -1).Result()
 	standupList := []*Standup{}
-	for _, r := range result {
-		standupList = append(standupList, NewStandup(r))
+	for i, r := range result {
+		standupList = append(standupList, NewStandup(r, i))
 	}
 	return standupList, err
 }
