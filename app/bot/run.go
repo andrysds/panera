@@ -1,10 +1,17 @@
 package bot
 
 import (
+	"log"
+
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func (b *Bot) Run() {
+func (b *Bot) Run(started chan<- bool) {
+	b.BotAPI = NewBotAPI()
+	b.Updates = NewUpdates(b.BotAPI)
+	log.Println("* [bot] Listening from webhook")
+	started <- true
+
 	for update := range b.Updates {
 		if update.Message == nil {
 			continue

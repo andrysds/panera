@@ -1,6 +1,8 @@
 package app
 
 import (
+	"log"
+
 	"github.com/andrysds/panera/app/bot"
 	"github.com/andrysds/panera/app/web"
 )
@@ -14,5 +16,24 @@ func NewPanera() *Panera {
 	return &Panera{
 		Bot: bot.NewBot(),
 		Web: web.NewWeb(),
+	}
+}
+
+func (p *Panera) Run() {
+	log.Println("Panera starting...")
+
+	started := make(chan bool, 2)
+	go p.Web.Run(started)
+	go p.Bot.Run(started)
+
+	for i := 0; i < 2; i++ {
+		<-started
+	}
+	p.Idle()
+}
+
+func (p *Panera) Idle() {
+	log.Println("Use Ctrl-C to stop")
+	for {
 	}
 }
