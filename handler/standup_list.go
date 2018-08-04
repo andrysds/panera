@@ -1,4 +1,4 @@
-package bot
+package handler
 
 import (
 	"github.com/andrysds/clarity"
@@ -6,7 +6,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func (b *Bot) HandleStandupList(update *tgbotapi.Update) *tgbotapi.MessageConfig {
+func HandleStandupList(chatId int64) *tgbotapi.MessageConfig {
 	standups, err := standup.CurrentList()
 	clarity.PrintIfError(err, "error on get standup list")
 
@@ -20,6 +20,6 @@ func (b *Bot) HandleStandupList(update *tgbotapi.Update) *tgbotapi.MessageConfig
 		messageText += s.Name + "\n"
 	}
 
-	message := b.NewMessage(update.Message.Chat.ID, messageText)
+	message := NewMessage(chatId, messageText)
 	return message
 }
