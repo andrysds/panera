@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/andrysds/panera/db/migrate"
-	"github.com/andrysds/panera/entity"
+	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -22,7 +22,7 @@ func (p *Panera) HandleMasterCommand(command string) {
 
 	// standup
 	case "standup_new_day":
-		result = entity.StandupNewDay()
+		result = standup.NewDay()
 	}
 	message := tgbotapi.NewMessage(p.MasterId, result)
 	p.SendMessage(message)

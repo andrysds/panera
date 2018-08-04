@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	"github.com/andrysds/clarity"
-	"github.com/andrysds/panera/entity"
+	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (p *Panera) HandleStandup(update *tgbotapi.Update) {
-	standup, err := entity.StandupCurrent()
+	standup, err := standup.Current()
 	clarity.PrintIfError(err, "error on get standup")
 
 	messageTemplate := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah _%s_ (@%s)"
@@ -20,7 +20,7 @@ func (p *Panera) HandleStandup(update *tgbotapi.Update) {
 }
 
 func (p *Panera) HandleStandupSkip(update *tgbotapi.Update) {
-	standup, current, err := entity.StandupNext()
+	standup, current, err := standup.Next()
 	clarity.PrintIfError(err, "error on skipping standup")
 
 	if err == nil {

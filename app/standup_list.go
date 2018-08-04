@@ -2,12 +2,12 @@ package app
 
 import (
 	"github.com/andrysds/clarity"
-	"github.com/andrysds/panera/entity"
+	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
-	standups, err := entity.StandupListCurrent()
+	standups, err := standup.CurrentList()
 	clarity.PrintIfError(err, "error on get standup list")
 
 	messageText := "Stand up lead periode ini:\n"

@@ -11,7 +11,7 @@ import (
 
 type Panera struct {
 	Bot      *tgbotapi.BotAPI
-	Updates  <-chan tgbotapi.Update
+	Updates  tgbotapi.UpdatesChannel
 	MasterId int64
 	ChatId   int64
 }
@@ -38,7 +38,7 @@ func NewBot(botToken string) *tgbotapi.BotAPI {
 	return bot
 }
 
-func NewUpdates(bot *tgbotapi.BotAPI) <-chan tgbotapi.Update {
+func NewUpdates(bot *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	webhookUrl := os.Getenv("WEBHOOK_URL")
 	webhook := tgbotapi.NewWebhook(webhookUrl + bot.Token)
 	_, err := bot.SetWebhook(webhook)
