@@ -2,6 +2,33 @@
 
 
 [[projects]]
+  name = "github.com/andrysds/clarity"
+  packages = ["."]
+  revision = "24fe90369e6028d6f445ad65955c2391a57e620a"
+  version = "v2.0.1"
+
+[[projects]]
+  name = "github.com/go-redis/redis"
+  packages = [
+    ".",
+    "internal",
+    "internal/consistenthash",
+    "internal/hashtag",
+    "internal/pool",
+    "internal/proto",
+    "internal/singleflight",
+    "internal/util"
+  ]
+  revision = "480db94d33e6088e08d628833b6c0705451d24bb"
+  version = "v6.13.2"
+
+[[projects]]
+  name = "github.com/subosito/gotenv"
+  packages = ["."]
+  revision = "69b5b6104433beb2cb9c3ce00bdadf3c7c2d3f34"
+  version = "v1.1.1"
+
+[[projects]]
   name = "github.com/technoweenie/multipartstreamer"
   packages = ["."]
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
@@ -16,6 +43,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4b9443e1dfa05d9e3b47f80f1a69cefe00fa167704b0bf9a05d86796a30df851"
+  inputs-digest = "e1841ae6bdaa69827b60ebfd232b7b49ea4210125cca377be87073c703eac5f8"
   solver-name = "gps-cdcl"
   solver-version = 1
