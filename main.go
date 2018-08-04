@@ -11,12 +11,13 @@ import (
 
 func main() {
 	gotenv.Load()
-	port := os.Getenv("PORT")
-	go http.ListenAndServe(":"+port, nil)
+	panera := app.NewPanera()
 
 	db.InitRedis()
 	defer db.Redis.Close()
 
-	panera := app.NewPanera()
+	port := os.Getenv("PORT")
+	go http.ListenAndServe(":"+port, nil)
+
 	panera.Run()
 }

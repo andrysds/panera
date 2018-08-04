@@ -1,5 +1,9 @@
 package app
 
+import (
+	"gopkg.in/telegram-bot-api.v4"
+)
+
 func (p *Panera) Run() {
 	for update := range p.Updates {
 		if update.Message == nil {
@@ -7,25 +11,26 @@ func (p *Panera) Run() {
 		}
 		p.LogMessage(update.Message)
 
-		// public
+		var message *tgbotapi.MessageConfig
 		switch {
 		case update.Message.NewChatMembers != nil:
-			p.HandleGroupInvitation(&update)
+			message = p.HandleGroupInvitation(&update)
 		case update.Message.IsCommand():
 			switch update.Message.Command() {
 			case "standup":
-				p.HandleStandup(&update)
+				message = p.HandleStandup(&update)
 			case "standup_list":
-				p.HandleStandupList(&update)
+				message = p.HandleStandupList(&update)
 			case "standup_skip":
-				p.HandleStandupSkip(&update)
+				message = p.HandleStandupSkip(&update)
 			default:
 				if update.Message.Chat.ID == p.MasterId {
-					p.HandleMasterCommand(update.Message.Command())
+					message = p.HandleMasterCommand(update.Message.Command())
 				}
 			}
 		case update.Message.Chat.ID == p.MasterId:
 			p.HandleMasterMessage(&update)
 		}
+		p.SendMessage(message)
 	}
 }
