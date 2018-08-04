@@ -19,12 +19,12 @@ Bukalapak PNR Squad Assistant
 
 ## Contributing
 
-Send a pull request from your fork branch. [How?](https://help.github.com/articles/creating-a-pull-request-from-a-fork/
+Send a pull request from your fork branch. [How?](https://help.github.com/articles/creating-a-pull-request-from-a-fork)
 
 ## Requirements
 
 - Go
-- Redis)
+- Redis
 
 ## How to run locally
 
