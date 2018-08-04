@@ -11,6 +11,8 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	result := NotFoundMessage
 	switch command {
 	// migrate
+	case "init":
+		result = migrate.Init()
 	case "standup_init":
 		result = migrate.StandupInit()
 	case "standup_list_init":

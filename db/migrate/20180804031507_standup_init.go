@@ -14,5 +14,5 @@ func StandupInit() string {
 		return err.Error()
 	}
 
-	return "standup_init success"
+	return SuccessMessage
 }

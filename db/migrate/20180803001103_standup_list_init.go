@@ -32,5 +32,5 @@ func StandupListInit() string {
 		}
 	}
 
-	return "standup_list_init success"
+	return SuccessMessage
 }
