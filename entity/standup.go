@@ -2,6 +2,7 @@ package entity
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/andrysds/panera/db"
@@ -28,7 +29,11 @@ func NewStandup(data string, order int) *Standup {
 	return standup
 }
 
-func GetStandup() (*Standup, error) {
+func (self *Standup) Raw() string {
+	return fmt.Sprintf("%s:%s:%s", self.Name, self.Username, self.State)
+}
+
+func StandupCurrent() (*Standup, error) {
 	standup := &Standup{}
 	order, err := db.Redis.Get(StandupKey).Int64()
 	if err != nil {
@@ -42,14 +47,14 @@ func GetStandup() (*Standup, error) {
 	return standup, err
 }
 
-func NextStandup() (*Standup, *Standup, error) {
+func StandupNext() (*Standup, *Standup, error) {
 	standup := &Standup{}
-	current, err := GetStandup()
+	current, err := StandupCurrent()
 	if err != nil {
 		return standup, current, err
 	}
 
-	standups, err := GetStandupList()
+	standups, err := StandupListCurrent()
 	if err != nil {
 		return standup, current, err
 	}
@@ -61,4 +66,25 @@ func NextStandup() (*Standup, *Standup, error) {
 		}
 	}
 	return standup, current, errors.New("not found")
+}
+
+func StandupNewDay() string {
+	current, err := StandupCurrent()
+	if err != nil {
+		return err.Error()
+	}
+
+	current.State = "1"
+	if _, err := db.Redis.LSet(StandupListKey, int64(current.Order), current.Raw()).Result(); err != nil {
+		return err.Error()
+	}
+
+	if _, err := db.Redis.Set(StandupKey, 6, 0).Result(); err != nil {
+		return err.Error()
+	}
+
+	if _, _, err := StandupNext(); err != nil {
+		return err.Error()
+	}
+	return "standup_new_day success"
 }

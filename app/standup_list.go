@@ -7,7 +7,7 @@ import (
 )
 
 func (p *Panera) HandleStandupList(update *tgbotapi.Update) {
-	standups, err := entity.GetStandupList()
+	standups, err := entity.StandupListCurrent()
 	clarity.PrintIfError(err, "error on get standup list")
 
 	messageText := "Stand up lead periode ini:\n"

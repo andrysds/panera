@@ -8,7 +8,7 @@ const StandupListKey = "panera:standup:list"
 
 type StandupList []*Standup
 
-func GetStandupList() (StandupList, error) {
+func StandupListCurrent() (StandupList, error) {
 	result, err := db.Redis.LRange(StandupListKey, 0, -1).Result()
 	standupList := []*Standup{}
 	for i, r := range result {

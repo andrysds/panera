@@ -6,13 +6,11 @@ import (
 )
 
 func StandupInit() string {
-	_, err := db.Redis.Del(entity.StandupKey).Result()
-	if err != nil {
+	if _, err := db.Redis.Del(entity.StandupKey).Result(); err != nil {
 		return err.Error()
 	}
 
-	_, err = db.Redis.Set(entity.StandupKey, 6, 0).Result()
-	if err != nil {
+	if _, err := db.Redis.Set(entity.StandupKey, 6, 0).Result(); err != nil {
 		return err.Error()
 	}
 

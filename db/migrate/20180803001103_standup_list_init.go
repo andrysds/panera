@@ -22,14 +22,12 @@ func StandupListInit() string {
 		"Luthfi:luthfift:0",
 	}
 
-	_, err := db.Redis.Del(entity.StandupListKey).Result()
-	if err != nil {
+	if _, err := db.Redis.Del(entity.StandupListKey).Result(); err != nil {
 		return err.Error()
 	}
 
 	for _, d := range initData {
-		_, err = db.Redis.RPush(entity.StandupListKey, d).Result()
-		if err != nil {
+		if _, err := db.Redis.RPush(entity.StandupListKey, d).Result(); err != nil {
 			return err.Error()
 		}
 	}
