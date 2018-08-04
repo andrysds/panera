@@ -1,8 +1,6 @@
 package bot
 
 import (
-	"log"
-
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/handler"
@@ -16,7 +14,7 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 
 	var message *tgbotapi.MessageConfig
 	chatID := update.Message.Chat.ID
-	b.LogMessage(update.Message)
+	handler.Log(update.Message.From.UserName, update.Message.Text)
 
 	switch {
 	case b.IsAddedToGroup(update):
@@ -27,10 +25,6 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 		message = handler.HandleMasterMessage(update)
 	}
 	b.SendMessage(message)
-}
-
-func (b *Bot) LogMessage(message *tgbotapi.Message) {
-	log.Printf("[%s] %s\n", message.From.UserName, message.Text)
 }
 
 func (b *Bot) SendMessage(message *tgbotapi.MessageConfig) {

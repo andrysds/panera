@@ -1,9 +1,15 @@
 package handler
 
 import (
+	"log"
+
 	"github.com/andrysds/panera/config"
 	"gopkg.in/telegram-bot-api.v4"
 )
+
+func Log(caller, message string) {
+	log.Printf("[%s] %s\n", caller, message)
+}
 
 func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 	var message *tgbotapi.MessageConfig

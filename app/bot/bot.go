@@ -26,7 +26,7 @@ func NewAPI() *tgbotapi.BotAPI {
 	if config.BotToken != "" {
 		API, err := tgbotapi.NewBotAPI(config.BotToken)
 		clarity.PanicIfError(err, "error on creating bot api")
-		log.Printf("* Authorized on account %s\n", API.Self.UserName)
+		log.Printf("Authorized on account %s\n", API.Self.UserName)
 		return API
 	}
 	return nil

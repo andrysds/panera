@@ -13,6 +13,7 @@ import (
 func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 	var message *tgbotapi.MessageConfig
 	command := mux.Vars(r)["command"]
+	handler.Log(r.Method, "/"+command)
 
 	switch command {
 	case "healthz":
