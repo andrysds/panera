@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/andrysds/panera/db"
@@ -28,25 +29,36 @@ func NewStandup(data string, order int) *Standup {
 }
 
 func GetStandup() (*Standup, error) {
+	standup := &Standup{}
 	order, err := db.Redis.Get(StandupKey).Int64()
 	if err != nil {
 		return nil, err
 	}
 
 	data, err := db.Redis.LRange(StandupListKey, order, order).Result()
-	standup := &Standup{}
 	if len(data) == 1 {
 		standup = NewStandup(data[0], int(order))
 	}
 	return standup, err
 }
 
-func SkipStandup(standups []*Standup, currentOrder int) (*Standup, error) {
-	for i := currentOrder + 1; i < len(standups); i++ {
+func NextStandup() (*Standup, *Standup, error) {
+	standup := &Standup{}
+	current, err := GetStandup()
+	if err != nil {
+		return standup, current, err
+	}
+
+	standups, err := GetStandupList()
+	if err != nil {
+		return standup, current, err
+	}
+
+	for i := current.Order + 1; i < len(standups); i++ {
 		if standups[i].State != "1" {
 			_, err := db.Redis.Set(StandupKey, i, 0).Result()
-			return standups[i], err
+			return standups[i], current, err
 		}
 	}
-	return nil, nil
+	return standup, current, errors.New("not found")
 }
