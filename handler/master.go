@@ -7,13 +7,8 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
-	message := NewMessage(config.SquadID, update.Message.Text)
-	return message
-}
-
 func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
-	result := "command is not defined"
+	result := NotFoundMessage
 	switch command {
 	// migrate
 	case "standup_init":
@@ -26,5 +21,10 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 		result = standup.NewDay()
 	}
 	message := NewMessage(config.MasterID, result)
+	return message
+}
+
+func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
+	message := NewMessage(config.SquadID, update.Message.Text)
 	return message
 }
