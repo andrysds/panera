@@ -1,4 +1,4 @@
-package app
+package bot
 
 import (
 	"fmt"
@@ -7,19 +7,19 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func (p *Panera) NewMessage(chatId int64, text string) *tgbotapi.MessageConfig {
+func (b *Bot) NewMessage(chatId int64, text string) *tgbotapi.MessageConfig {
 	message := tgbotapi.NewMessage(chatId, text)
 	message.ParseMode = "markdown"
 	return &message
 }
 
-func (p *Panera) LogMessage(message *tgbotapi.Message) {
+func (b *Bot) LogMessage(message *tgbotapi.Message) {
 	fmt.Printf("[%s] %s\n", message.From.UserName, message.Text)
 }
 
-func (p *Panera) SendMessage(message *tgbotapi.MessageConfig) {
+func (b *Bot) SendMessage(message *tgbotapi.MessageConfig) {
 	if message != nil {
-		_, err := p.Bot.Send(message)
+		_, err := b.BotAPI.Send(message)
 		clarity.PrintIfError(err, "error on sending message")
 	}
 }

@@ -1,4 +1,4 @@
-package app
+package bot
 
 import (
 	"strconv"
@@ -6,16 +6,16 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func (p *Panera) HandleGroupInvitation(update *tgbotapi.Update) *tgbotapi.MessageConfig {
-	if !p.IsAddedToGroup(update.Message.NewChatMembers) {
+func (b *Bot) HandleGroupInvitation(update *tgbotapi.Update) *tgbotapi.MessageConfig {
+	if !b.IsAddedToGroup(update.Message.NewChatMembers) {
 		return nil
 	}
 	messageText := "I was invited to " + strconv.FormatInt(update.Message.Chat.ID, 10)
-	message := p.NewMessage(p.MasterId, messageText)
+	message := b.NewMessage(b.MasterId, messageText)
 	return message
 }
 
-func (p *Panera) IsAddedToGroup(members *[]tgbotapi.User) bool {
+func (b *Bot) IsAddedToGroup(members *[]tgbotapi.User) bool {
 	for _, member := range *members {
 		if member.UserName == "panera_bot" {
 			return true

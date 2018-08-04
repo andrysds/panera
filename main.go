@@ -19,5 +19,5 @@ func main() {
 	port := os.Getenv("PORT")
 	go http.ListenAndServe(":"+port, nil)
 
-	panera.Run()
+	panera.Bot.Run()
 }

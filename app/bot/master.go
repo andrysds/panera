@@ -1,4 +1,4 @@
-package app
+package bot
 
 import (
 	"github.com/andrysds/panera/db/migrate"
@@ -6,12 +6,12 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func (p *Panera) HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
-	message := p.NewMessage(p.ChatId, update.Message.Text)
+func (b *Bot) HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
+	message := b.NewMessage(b.ChatId, update.Message.Text)
 	return message
 }
 
-func (p *Panera) HandleMasterCommand(command string) *tgbotapi.MessageConfig {
+func (b *Bot) HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	result := "command is not defined"
 	switch command {
 	// migrate
@@ -24,6 +24,6 @@ func (p *Panera) HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	case "standup_new_day":
 		result = standup.NewDay()
 	}
-	message := p.NewMessage(p.MasterId, result)
+	message := b.NewMessage(b.MasterId, result)
 	return message
 }
