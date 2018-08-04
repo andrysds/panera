@@ -14,7 +14,7 @@ func (p *Panera) NewMessage(chatId int64, text string) tgbotapi.MessageConfig {
 }
 
 func (p *Panera) LogMessage(message *tgbotapi.Message) {
-	fmt.Println("[%s] %s", message.From.UserName, message.Text)
+	fmt.Printf("[%s] %s\n", message.From.UserName, message.Text)
 }
 
 func (p *Panera) SendMessage(message tgbotapi.MessageConfig) {
