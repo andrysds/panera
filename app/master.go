@@ -11,7 +11,7 @@ func (p *Panera) HandleMasterMessage(update *tgbotapi.Update) {
 }
 
 func (p *Panera) HandleMasterCommand(command string) {
-	result := ""
+	result := "command is not defined"
 	switch command {
 	case "standup_init":
 		result = migrate.StandupInit()
