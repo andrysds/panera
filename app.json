@@ -1,12 +1,10 @@
 {
   "name": "panera",
-  "description": "bot for panera squad",
-  "keywords": [
-    "panera",
-    "go",
-    "andrys"
-  ],
+  "description": "Bukalapak PNR Squad Assistant",
   "image": "heroku/go:1.6",
+  "repository": "http://github.com/andrysds/panera",
   "mount_dir": "src/github.com/heroku/panera",
-  "repository": "http://github.com/andrysds/panera"
+  "keywords": [
+    "go"
+  ]
 }
