@@ -21,3 +21,6 @@ pretty:
 
 compile:
 	go build -o panera .
+
+run: pretty compile
+	./panera

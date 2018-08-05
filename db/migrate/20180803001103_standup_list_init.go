@@ -2,7 +2,7 @@ package migrate
 
 import (
 	"github.com/andrysds/panera/db"
-	"github.com/andrysds/panera/entity"
+	"github.com/andrysds/panera/entity/standup"
 )
 
 func StandupListInit() string {
@@ -22,15 +22,15 @@ func StandupListInit() string {
 		"Luthfi:luthfift:0",
 	}
 
-	if _, err := db.Redis.Del(entity.StandupListKey).Result(); err != nil {
+	if _, err := db.Redis.Del(standup.ListKey).Result(); err != nil {
 		return err.Error()
 	}
 
 	for _, d := range initData {
-		if _, err := db.Redis.RPush(entity.StandupListKey, d).Result(); err != nil {
+		if _, err := db.Redis.RPush(standup.ListKey, d).Result(); err != nil {
 			return err.Error()
 		}
 	}
 
-	return "standup_list_init success"
+	return SuccessMessage
 }
