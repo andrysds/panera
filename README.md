@@ -41,5 +41,5 @@ Send a pull request from your fork branch. [How?](https://help.github.com/articl
 - Access the commands via curl, postman, or web browser
 
   ```sh
-  curl http://localhost:9542/init -H 'Authorization: Basic cGFuZXJhOnBhbmVyYQ=='
+  curl -u panera:panera http://localhost:9542/init
   ```
