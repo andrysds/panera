@@ -1,39 +1,19 @@
 package app
 
 import (
-	"log"
-
 	"github.com/andrysds/panera/app/bot"
 	"github.com/andrysds/panera/app/web"
+	"github.com/andrysds/panera/config"
 )
 
-type Panera struct {
-	Bot *bot.Bot
-	Web *web.Web
+type Panera interface {
+	Run()
 }
 
-func NewPanera() *Panera {
-	return &Panera{
-		Bot: bot.NewBot(),
-		Web: web.NewWeb(),
-	}
-}
-
-func (p *Panera) Run() {
-	log.Println("Panera starting...")
-
-	started := make(chan bool, 2)
-	go p.Web.Run(started)
-	go p.Bot.Run(started)
-
-	for i := 0; i < 2; i++ {
-		<-started
-	}
-	p.IDle()
-}
-
-func (p *Panera) IDle() {
-	log.Println("Use Ctrl-C to stop")
-	for {
+func NewPanera() Panera {
+	if config.App == "Bot" {
+		return bot.NewBot()
+	} else {
+		return web.NewWeb()
 	}
 }

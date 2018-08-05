@@ -8,6 +8,8 @@ import (
 )
 
 var (
+	App string
+
 	BotToken   string
 	Port       string
 	WebhookUrl string
@@ -22,6 +24,7 @@ var (
 
 func Init() {
 	gotenv.Load()
+	App = os.Getenv("APP")
 
 	BotToken = os.Getenv("BOT_TOKEN")
 	Port = os.Getenv("PORT")

@@ -2,6 +2,7 @@ package bot
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
@@ -26,7 +27,7 @@ func NewAPI() *tgbotapi.BotAPI {
 	if config.BotToken != "" {
 		API, err := tgbotapi.NewBotAPI(config.BotToken)
 		clarity.PanicIfError(err, "error on creating bot api")
-		log.Printf("Authorized on account %s\n", API.Self.UserName)
+		log.Printf("* Authorized on account %s\n", API.Self.UserName)
 		return API
 	}
 	return nil
@@ -42,10 +43,8 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	return nil
 }
 
-func (b *Bot) Run(started chan<- bool) {
-	log.Println("* [bot] Listening from webhook")
-	started <- true
-
+func (b *Bot) Run() {
+	go http.ListenAndServe(":"+config.Port, nil)
 	for update := range b.Updates {
 		b.Handle(&update)
 	}

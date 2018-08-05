@@ -14,6 +14,7 @@ type Web struct {
 }
 
 func NewWeb() *Web {
+	log.Println("* Listening on tcp://0.0.0.0:" + config.Port)
 	return &Web{
 		BasicAuthorizer: clarity.NewBasicAuthorizer(
 			config.Username,
@@ -22,10 +23,7 @@ func NewWeb() *Web {
 	}
 }
 
-func (w *Web) Run(started chan<- bool) {
-	log.Println("* [web] Listening on tcp://0.0.0.0:" + config.Port)
-	started <- true
-
+func (w *Web) Run() {
 	router := mux.NewRouter()
 	router.HandleFunc("/{command}", w.Handle)
 	http.ListenAndServe(":"+config.Port, router)

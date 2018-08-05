@@ -19,7 +19,7 @@ func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 	case "healthz":
 		message = handler.NewMessage(config.MasterID, handler.OKMessage)
 	default:
-		if err := w.BasicAuthorizer.Authorize(r.Header); err == nil {
+		if err := w.Authorize(r.Header); err == nil {
 			message = handler.HandleCommand(config.MasterID, command)
 		} else {
 			message = handler.NewMessage(config.MasterID, handler.UnauthorizedMessage)
