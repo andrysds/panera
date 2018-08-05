@@ -19,7 +19,7 @@ Bukalapak PNR Squad Assistant
 
 ## Scheduler
 
-[https://github.com/andrysds/panera-scheduler]
+https://github.com/andrysds/panera-scheduler
 
 ## Contributing
 
