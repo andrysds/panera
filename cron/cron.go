@@ -9,7 +9,7 @@ import (
 var Cron *cron.Cron
 
 func Init() {
-	Cron := cron.New()
+	Cron = cron.New()
 
 	AddStandupJobs()
 
