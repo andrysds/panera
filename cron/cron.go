@@ -11,11 +11,11 @@ var Cron *cron.Cron
 
 func Init() {
 	Cron := cron.New()
-	Cron.AddFunc("0 30 * * * *", TestCron)
+	Cron.AddFunc("0 * * * * *", TestCron)
 	go Cron.Start()
 	log.Println("* Cron initialized")
 }
 
 func TestCron() {
-	log.Println("Every hour on the half hour", time.Now())
+	log.Println("Every minutes", time.Now())
 }
