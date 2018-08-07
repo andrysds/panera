@@ -36,4 +36,6 @@ func Init() {
 
 	Username = os.Getenv("USERNAME")
 	Password = os.Getenv("PASSWORD")
+
+  log.Println("* Config initialized")
 }

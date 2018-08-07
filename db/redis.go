@@ -11,8 +11,11 @@ var Redis *redis.Client
 func InitRedis() {
 	options, err := redis.ParseURL(config.RedisUrl)
 	clarity.PanicIfError(err, "error on parsing redis url")
+
 	client := redis.NewClient(options)
 	_, err = client.Ping().Result()
 	clarity.PanicIfError(err, "error on connecting to redis")
+
 	Redis = client
+  log.Println("* Redis connected")
 }
