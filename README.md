@@ -17,10 +17,6 @@ Bukalapak PNR Squad Assistant
 - /init_standup_list
 - /standup_new_day
 
-## Scheduler
-
-https://github.com/andrysds/panera-scheduler
-
 ## Contributing
 
 Send a pull request from your fork branch. [How?](https://help.github.com/articles/creating-a-pull-request-from-a-fork)
