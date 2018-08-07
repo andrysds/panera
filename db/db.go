@@ -19,5 +19,5 @@ func InitRedis() {
 	clarity.PanicIfError(err, "error on connecting to redis")
 
 	Redis = client
-	log.Println("* Redis connected")
+	log.Println("* Redis initialized")
 }

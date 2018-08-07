@@ -1,21 +1,26 @@
 package app
 
 import (
+	"log"
+
 	"github.com/andrysds/panera/app/bot"
 	"github.com/andrysds/panera/app/web"
 	"github.com/andrysds/panera/config"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-type Panera interface {
+var Panera App
+
+type App interface {
 	Run()
 	SendMessage(*tgbotapi.MessageConfig)
 }
 
-func NewPanera() Panera {
+func Init() {
 	if config.App == "Bot" {
-		return bot.NewBot()
+		Panera = bot.NewBot()
 	} else {
-		return web.NewWeb()
+		Panera = web.NewWeb()
 	}
+	log.Println("* App initialized")
 }

@@ -1,7 +1,6 @@
 package web
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/andrysds/clarity"
@@ -14,7 +13,6 @@ type Web struct {
 }
 
 func NewWeb() *Web {
-	log.Println("* Listening on tcp://0.0.0.0:" + config.Port)
 	return &Web{
 		BasicAuthorizer: clarity.NewBasicAuthorizer(
 			config.Username,

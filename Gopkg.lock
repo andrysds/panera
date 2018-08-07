@@ -35,6 +35,12 @@
   version = "v1.6.2"
 
 [[projects]]
+  name = "github.com/robfig/cron"
+  packages = ["."]
+  revision = "b41be1df696709bb6395fe435af20370037c0b4c"
+  version = "v1.1"
+
+[[projects]]
   name = "github.com/subosito/gotenv"
   packages = ["."]
   revision = "69b5b6104433beb2cb9c3ce00bdadf3c7c2d3f34"
@@ -55,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1446930bf36d586ae0dcee9094d785103ab68a35bcb91b04d539145c0a168271"
+  inputs-digest = "33d7707d13e06bc2e043080094c6833e2e8349e9009f444d6f00a8256b736f90"
   solver-name = "gps-cdcl"
   solver-version = 1
