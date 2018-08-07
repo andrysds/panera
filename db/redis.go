@@ -1,6 +1,8 @@
 package db
 
 import (
+	"log"
+
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
 	"github.com/go-redis/redis"
@@ -17,5 +19,5 @@ func InitRedis() {
 	clarity.PanicIfError(err, "error on connecting to redis")
 
 	Redis = client
-  log.Println("* Redis connected")
+	log.Println("* Redis connected")
 }

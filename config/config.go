@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"os"
 	"strconv"
 
@@ -37,5 +38,5 @@ func Init() {
 	Username = os.Getenv("USERNAME")
 	Password = os.Getenv("PASSWORD")
 
-  log.Println("* Config initialized")
+	log.Println("* Config initialized")
 }

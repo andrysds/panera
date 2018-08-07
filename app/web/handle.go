@@ -23,7 +23,6 @@ func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 			message = handler.HandleCommand(config.MasterID, command)
 		} else {
 			message = handler.NewMessage(config.MasterID, handler.UnauthorizedMessage)
-
 		}
 	}
 
@@ -35,5 +34,12 @@ func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 			wr.WriteHeader(http.StatusUnauthorized)
 		}
 		fmt.Fprintf(wr, message.Text)
+		w.SendMessage(message)
+	}
+}
+
+func (w *Web) SendMessage(message *tgbotapi.MessageConfig) {
+	if message != nil {
+		handler.Log("panera", message.Text)
 	}
 }
