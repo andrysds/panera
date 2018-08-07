@@ -1,4 +1,4 @@
-package handler
+package entity
 
 import (
 	"gopkg.in/telegram-bot-api.v4"

@@ -3,12 +3,13 @@ package handler
 import (
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/db/migrate"
+	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
-	result := NotFoundMessage
+	result := entity.NotFoundMessage
 	switch command {
 	// migrate
 	case "init":
@@ -22,11 +23,11 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	case "standup_new_day":
 		result = standup.NewDay()
 	}
-	message := NewMessage(config.MasterID, result)
+	message := entity.NewMessage(config.MasterID, result)
 	return message
 }
 
 func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
-	message := NewMessage(config.SquadID, update.Message.Text)
+	message := entity.NewMessage(config.SquadID, update.Message.Text)
 	return message
 }
