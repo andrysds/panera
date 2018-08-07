@@ -2,14 +2,12 @@ package handler
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/andrysds/panera/config"
+	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
-
-func Log(caller, message string) {
-	log.Printf("[%s] %s\n", caller, message)
-}
 
 func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 	var message *tgbotapi.MessageConfig
@@ -26,4 +24,14 @@ func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 		}
 	}
 	return message
+}
+
+func HandleGroupInvitation(chatID int64) *tgbotapi.MessageConfig {
+	messageText := "I was invited to " + strconv.FormatInt(chatID, 10)
+	message := entity.NewMessage(config.MasterID, messageText)
+	return message
+}
+
+func LogMessage(caller, message string) {
+	log.Printf("[%s] %s\n", caller, message)
 }

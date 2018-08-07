@@ -14,7 +14,7 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 
 	var message *tgbotapi.MessageConfig
 	chatID := update.Message.Chat.ID
-	handler.Log(update.Message.From.UserName, update.Message.Text)
+	handler.LogMessage(update.Message.From.UserName, update.Message.Text)
 
 	switch {
 	case b.IsAddedToGroup(update):

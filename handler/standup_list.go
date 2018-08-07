@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/andrysds/clarity"
+	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -20,6 +21,6 @@ func HandleStandupList(chatID int64) *tgbotapi.MessageConfig {
 		messageText += s.Name + "\n"
 	}
 
-	message := NewMessage(chatID, messageText)
+	message := entity.NewMessage(chatID, messageText)
 	return message
 }
