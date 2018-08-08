@@ -35,6 +35,20 @@
   version = "v1.6.2"
 
 [[projects]]
+  name = "github.com/newrelic/go-agent"
+  packages = [
+    ".",
+    "internal",
+    "internal/cat",
+    "internal/jsonx",
+    "internal/logger",
+    "internal/sysinfo",
+    "internal/utilization"
+  ]
+  revision = "a5d75f2b4787aa1bbc76688187b2353f8ff581a6"
+  version = "v2.0.0"
+
+[[projects]]
   name = "github.com/robfig/cron"
   packages = ["."]
   revision = "b41be1df696709bb6395fe435af20370037c0b4c"
@@ -61,6 +75,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "33d7707d13e06bc2e043080094c6833e2e8349e9009f444d6f00a8256b736f90"
+  inputs-digest = "6bab093b3dc0fa665ef5dc7d816a9d2090a6a39ef873d3ee72036f7e5ee9bf56"
   solver-name = "gps-cdcl"
   solver-version = 1
