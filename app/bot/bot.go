@@ -18,12 +18,12 @@ type Bot struct {
 }
 
 func NewBot() *Bot {
-	API := NewAPI()
-	updates := NewUpdates(API)
-	return &Bot{
-		API:     API,
-		Updates: updates,
+	bot := Bot{
+		API:      NewAPI(),
+		NewRelic: NewNewRelic(),
 	}
+	bot.Updates = NewUpdates(bot.API)
+	return &bot
 }
 
 func NewAPI() *tgbotapi.BotAPI {
