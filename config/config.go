@@ -41,7 +41,7 @@ func Init() {
 	Username = os.Getenv("USERNAME")
 	Password = os.Getenv("PASSWORD")
 
-	NewRelicKey = os.Getenv("NEW_RELIC_KEY")
+	NewRelicKey = os.Getenv("NEW_RELIC_LICENSE_KEY")
 
 	log.Println("* Config initialized")
 }
