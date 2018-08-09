@@ -56,9 +56,8 @@ func NewNewRelic() newrelic.Application {
 }
 
 func (b *Bot) Run() {
-	mux := http.NewServeMux()
-	mux.HandleFunc(newrelic.WrapHandleFunc(b.NewRelic, "/healthz", handler.HandleHealthz))
-	go http.ListenAndServe(":"+config.Port, mux)
+	http.HandleFunc(newrelic.WrapHandleFunc(b.NewRelic, "/healthz", handler.HandleHealthz))
+	go http.ListenAndServe(":"+config.Port, nil)
 
 	for update := range b.Updates {
 		b.Handle(&update)
