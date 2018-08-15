@@ -5,7 +5,7 @@ import (
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
-	"github.com/gorilla/mux"
+	"github.com/andrysds/panera/handler"
 )
 
 type Web struct {
@@ -22,7 +22,6 @@ func NewWeb() *Web {
 }
 
 func (w *Web) Run() {
-	router := mux.NewRouter()
-	router.HandleFunc("/{command}", w.Handle)
-	http.ListenAndServe(":"+config.Port, router)
+	handler.Handler.HandleFunc("/{command}", w.Handle)
+	http.ListenAndServe(":"+config.Port, handler.Handler)
 }

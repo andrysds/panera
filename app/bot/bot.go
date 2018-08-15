@@ -6,6 +6,7 @@ import (
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
+	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -41,7 +42,7 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 }
 
 func (b *Bot) Run() {
-	go http.ListenAndServe(":"+config.Port, nil)
+	go http.ListenAndServe(":"+config.Port, handler.Handler)
 
 	for update := range b.Updates {
 		b.Handle(&update)
