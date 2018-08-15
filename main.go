@@ -7,6 +7,7 @@ import (
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/cron"
 	"github.com/andrysds/panera/db"
+	"github.com/andrysds/panera/handler"
 )
 
 func main() {
@@ -14,6 +15,7 @@ func main() {
 
 	config.Init()
 	db.InitRedis()
+	handler.Init()
 	app.Init()
 	cron.Init()
 
