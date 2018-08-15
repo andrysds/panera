@@ -6,22 +6,16 @@ import (
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
-	"github.com/andrysds/panera/handler"
-	"github.com/newrelic/go-agent"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 type Bot struct {
-	API      *tgbotapi.BotAPI
-	Updates  tgbotapi.UpdatesChannel
-	NewRelic newrelic.Application
+	API     *tgbotapi.BotAPI
+	Updates tgbotapi.UpdatesChannel
 }
 
 func NewBot() *Bot {
-	bot := Bot{
-		API:      NewAPI(),
-		NewRelic: NewNewRelic(),
-	}
+	bot := Bot{API: NewAPI()}
 	bot.Updates = NewUpdates(bot.API)
 	return &bot
 }
@@ -46,17 +40,7 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	return nil
 }
 
-func NewNewRelic() newrelic.Application {
-	config := newrelic.NewConfig("Panera", config.NewRelicKey)
-	if app, err := newrelic.NewApplication(config); err == nil {
-		return app
-	} else {
-		return nil
-	}
-}
-
 func (b *Bot) Run() {
-	http.HandleFunc(newrelic.WrapHandleFunc(b.NewRelic, "/healthz", handler.HandleHealthz))
 	go http.ListenAndServe(":"+config.Port, nil)
 
 	for update := range b.Updates {
