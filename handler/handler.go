@@ -6,18 +6,8 @@ import (
 
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
-	"github.com/gorilla/mux"
 	"gopkg.in/telegram-bot-api.v4"
 )
-
-var Handler *mux.Router
-
-func Init() {
-	Handler = mux.NewRouter()
-	Handler.HandleFunc("/healthz", HandleHealthz)
-
-	log.Println("* Handler initialized")
-}
 
 func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 	var message *tgbotapi.MessageConfig
