@@ -6,8 +6,7 @@ pretty:
 	gofmt -w .
 
 compile:
-	go build -o panera main.go
-	go build -o panera-scheduler scheduler/main.go
+	go build -o panera .
 
 run: pretty compile
 	./panera
