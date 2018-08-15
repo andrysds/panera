@@ -1,2 +1,2 @@
 web: panera
-worker: panera-scheduler
+clock: scheduler
