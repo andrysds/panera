@@ -14,7 +14,7 @@ var Handler *mux.Router
 
 func Init() {
 	Handler = mux.NewRouter()
-	Handler.HandleFunc("/healthz", HandleHealthz)
+	Handler.HandleFunc("/", HandleHealthz)
 
 	log.Println("* Handler initialized")
 }
