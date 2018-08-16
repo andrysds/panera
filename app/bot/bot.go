@@ -42,7 +42,8 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 }
 
 func (b *Bot) Run() {
-	go http.ListenAndServe(":"+config.Port, handler.Handler)
+	http.HandleFunc("/", handler.HandleHealthz)
+	go http.ListenAndServe(":"+config.Port, nil)
 
 	for update := range b.Updates {
 		b.Handle(&update)

@@ -1,12 +1,16 @@
 package handler
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/andrysds/panera/entity"
 )
 
 func HandleHealthz(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, entity.OKMessage)
+	w.Header().Set("Content-Type", "application/json")
+	result := map[string]string{
+		"message": entity.OKMessage,
+	}
+	json.NewEncoder(w).Encode(result)
 }
