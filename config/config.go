@@ -21,8 +21,6 @@ var (
 
 	Username string
 	Password string
-
-	NewRelicKey string
 )
 
 func Init() {
@@ -40,8 +38,6 @@ func Init() {
 
 	Username = os.Getenv("USERNAME")
 	Password = os.Getenv("PASSWORD")
-
-	NewRelicKey = os.Getenv("NEW_RELIC_LICENSE_KEY")
 
 	log.Println("* Config initialized")
 }
