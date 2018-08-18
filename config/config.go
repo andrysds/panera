@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	App string
+	BotToken string
 
-	BotToken   string
 	Port       string
 	WebhookUrl string
-	RedisUrl   string
+
+	RedisUrl string
 
 	MasterID int64
 	SquadID  int64
@@ -25,11 +25,12 @@ var (
 
 func Init() {
 	gotenv.Load()
-	App = os.Getenv("APP")
 
 	BotToken = os.Getenv("BOT_TOKEN")
+
 	Port = os.Getenv("PORT")
 	WebhookUrl = os.Getenv("WEBHOOK_URL")
+
 	RedisUrl = os.Getenv("REDIS_URL")
 
 	MasterID, _ = strconv.ParseInt(os.Getenv("MASTER_ID"), 10, 64)

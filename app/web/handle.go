@@ -16,15 +16,10 @@ func (w *Web) Handle(wr http.ResponseWriter, r *http.Request) {
 	command := mux.Vars(r)["command"]
 	handler.LogMessage(r.Method, "/"+command)
 
-	switch command {
-	case "healthz":
-		message = entity.NewMessage(config.MasterID, entity.OKMessage)
-	default:
-		if err := w.Authorize(r.Header); err == nil {
-			message = handler.HandleCommand(config.MasterID, command)
-		} else {
-			message = entity.NewMessage(config.MasterID, entity.UnauthorizedMessage)
-		}
+	if err := w.Authorize(r.Header); err == nil {
+		message = handler.HandleCommand(config.MasterID, command)
+	} else {
+		message = entity.NewMessage(config.MasterID, entity.UnauthorizedMessage)
 	}
 
 	if message != nil {

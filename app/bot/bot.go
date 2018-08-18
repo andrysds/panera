@@ -6,6 +6,7 @@ import (
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
+	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -15,12 +16,9 @@ type Bot struct {
 }
 
 func NewBot() *Bot {
-	API := NewAPI()
-	updates := NewUpdates(API)
-	return &Bot{
-		API:     API,
-		Updates: updates,
-	}
+	bot := Bot{API: NewAPI()}
+	bot.Updates = NewUpdates(bot.API)
+	return &bot
 }
 
 func NewAPI() *tgbotapi.BotAPI {
@@ -44,7 +42,9 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 }
 
 func (b *Bot) Run() {
+	http.HandleFunc("/", handler.HandleHealthz)
 	go http.ListenAndServe(":"+config.Port, nil)
+
 	for update := range b.Updates {
 		b.Handle(&update)
 	}

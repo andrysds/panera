@@ -17,7 +17,7 @@ type App interface {
 }
 
 func Init() {
-	if config.App == "Bot" {
+	if config.BotToken != "" {
 		Panera = bot.NewBot()
 	} else {
 		Panera = web.NewWeb()
