@@ -16,6 +16,7 @@ Bukalapak PNR Squad Assistant
 - /init_standup
 - /init_standup_list
 - /standup_new_day
+- /standup_new_period
 
 ## Contributing
 
