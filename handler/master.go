@@ -22,6 +22,11 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	// standup
 	case "standup_new_day":
 		result = standup.NewDay()
+		if result == entity.NotFoundMessage {
+			result = standup.NewPeriod()
+		}
+	case "standup_new_period":
+		result = standup.NewPeriod()
 	}
 	message := entity.NewMessage(config.MasterID, result)
 	return message
