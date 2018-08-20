@@ -22,5 +22,5 @@ func NewDay() string {
 	if _, _, err := Next(); err != nil {
 		return err.Error()
 	}
-	return "standup_new_day success"
+	return "standup\\_new\\_day success"
 }
