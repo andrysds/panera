@@ -19,7 +19,7 @@ func Next() (*Standup, *Standup, error) {
 	}
 
 	for _, obj := range objs {
-		if obj.State != "1" {
+		if obj.State != "1" && obj.Order != current.Order {
 			_, err := db.Redis.Set(Key, obj.Order, 0).Result()
 			return obj, current, err
 		}
