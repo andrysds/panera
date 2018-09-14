@@ -21,7 +21,7 @@ func HandleStandup(chatID int64) *tgbotapi.MessageConfig {
 }
 
 func HandleStandupSkip(chatID int64) *tgbotapi.MessageConfig {
-	standup, current, err := standup.Next()
+	standup, current, err := standup.Next(false)
 	clarity.PrintIfError(err, "error on skipping standup")
 
 	if err == nil {

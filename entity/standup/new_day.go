@@ -19,7 +19,7 @@ func NewDay() string {
 		return err.Error()
 	}
 
-	if _, _, err := Next(); err != nil {
+	if _, _, err := Next(true); err != nil {
 		return err.Error()
 	}
 	return "standup\\_new\\_day success"

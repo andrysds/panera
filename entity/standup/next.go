@@ -6,7 +6,7 @@ import (
 	"github.com/andrysds/panera/db"
 )
 
-func Next() (*Standup, *Standup, error) {
+func Next(fromBeginning bool) (*Standup, *Standup, error) {
 	obj := &Standup{}
 	current, err := Current()
 	if err != nil {
@@ -18,10 +18,15 @@ func Next() (*Standup, *Standup, error) {
 		return obj, current, err
 	}
 
-	for _, obj := range objs {
-		if obj.State != "1" && obj.Order != current.Order {
-			_, err := db.Redis.Set(Key, obj.Order, 0).Result()
-			return obj, current, err
+	i := current.Order + 1
+	if fromBeginning {
+		i = 0
+	}
+
+	for ; i < len(objs); i++ {
+		if objs[i].State != "1" {
+			_, err := db.Redis.Set(Key, i, 0).Result()
+			return objs[i], current, err
 		}
 	}
 	return obj, current, errors.New("not found")
