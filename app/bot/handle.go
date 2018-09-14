@@ -24,6 +24,7 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 	case chatID == config.MasterID:
 		message = handler.HandleMasterMessage(update)
 	}
+	message.ReplyToMessageID = update.Message.MessageID
 	b.SendMessage(message)
 }
 
