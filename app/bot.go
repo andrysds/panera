@@ -71,8 +71,9 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 	case chatID == config.MasterID:
 		if update.Message.ForwardFrom != nil {
 			message = entity.NewMessage(config.MasterID, update.Message.ForwardFrom.UserName)
+		} else {
+			message = handler.HandleMasterMessage(update)
 		}
-		message = handler.HandleMasterMessage(update)
 	}
 	b.SendMessage(message)
 }
