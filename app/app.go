@@ -3,8 +3,6 @@ package app
 import (
 	"log"
 
-	"github.com/andrysds/panera/app/bot"
-	"github.com/andrysds/panera/app/web"
 	"github.com/andrysds/panera/config"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -18,9 +16,9 @@ type App interface {
 
 func Init() {
 	if config.BotToken != "" {
-		Panera = bot.NewBot()
+		Panera = NewBot()
 	} else {
-		Panera = web.NewWeb()
+		Panera = NewCli()
 	}
 	log.Println("* App initialized")
 }
