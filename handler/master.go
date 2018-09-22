@@ -4,7 +4,6 @@ import (
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/db/migrate"
 	"github.com/andrysds/panera/entity"
-	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
@@ -21,12 +20,12 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 
 	// standup
 	case "standup_new_day":
-		result = standup.NewDay()
+		result = entity.NewDayStandup()
 		if result == entity.NotFoundMessage {
-			result = standup.NewPeriod()
+			result = entity.NewPeriodStandupList()
 		}
 	case "standup_new_period":
-		result = standup.NewPeriod()
+		result = entity.NewPeriodStandupList()
 	}
 	message := entity.NewMessage(config.MasterID, result)
 	return message

@@ -19,6 +19,9 @@ func (c *Cli) Run() {
 	for {
 		fmt.Print("> ")
 		fmt.Scan(&command)
+		if command == "exit" {
+			return
+		}
 		c.Handle(command)
 	}
 }

@@ -44,6 +44,8 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 func (b *Bot) Run() {
 	http.HandleFunc("/", handler.HandleHealthz)
 	go http.ListenAndServe(":"+config.Port, nil)
+	log.Println("* Listening on tcp://0.0.0.0:" + config.Port)
+	log.Println("Use Ctrl-C to stop")
 
 	for update := range b.Updates {
 		b.Handle(&update)
