@@ -36,8 +36,5 @@ func Init() {
 	MasterID, _ = strconv.ParseInt(os.Getenv("MASTER_ID"), 10, 64)
 	SquadID, _ = strconv.ParseInt(os.Getenv("SQUAD_ID"), 10, 64)
 
-	Username = os.Getenv("USERNAME")
-	Password = os.Getenv("PASSWORD")
-
 	log.Println("* Config initialized")
 }
