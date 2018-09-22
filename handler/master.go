@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/db/migrate"
 	"github.com/andrysds/panera/entity"
@@ -32,6 +34,13 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 }
 
 func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
-	message := entity.NewMessage(config.SquadID, update.Message.Text)
+	var message *tgbotapi.MessageConfig
+	if update.Message.ForwardFrom != nil {
+		messageText := update.Message.ForwardFrom.UserName + " "
+		messageText += strconv.Itoa(update.Message.ForwardFrom.ID)
+		message = entity.NewMessage(config.MasterID, messageText)
+	} else {
+		message = entity.NewMessage(config.SquadID, update.Message.Text)
+	}
 	return message
 }
