@@ -6,6 +6,7 @@ import (
 
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/config"
+	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -68,6 +69,9 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 		message = handler.HandleCommand(chatID, update.Message.Command())
 		message.ReplyToMessageID = update.Message.MessageID
 	case chatID == config.MasterID:
+		if update.Message.ForwardFrom != nil {
+			message = entity.NewMessage(config.MasterID, update.Message.ForwardFrom.UserName)
+		}
 		message = handler.HandleMasterMessage(update)
 	}
 	b.SendMessage(message)
