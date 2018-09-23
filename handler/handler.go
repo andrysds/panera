@@ -18,6 +18,8 @@ func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 		message = HandleStandupList(chatID)
 	case "standup_skip":
 		message = HandleStandupSkip(chatID)
+	case "birthdays":
+		message = HandleBirthdays(chatID)
 	default:
 		if chatID == config.MasterID {
 			message = HandleMasterCommand(command)
