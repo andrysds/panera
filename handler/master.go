@@ -2,6 +2,7 @@ package handler
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/db/migrate"
@@ -40,7 +41,8 @@ func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
 		messageText += strconv.Itoa(update.Message.ForwardFrom.ID)
 		message = entity.NewMessage(config.MasterID, messageText)
 	} else {
-		message = entity.NewMessage(config.SquadID, update.Message.Text)
+		messageText := strings.Replace(update.Message.Text, "<bq>", "`", -1)
+		message = entity.NewMessage(config.SquadID, messageText)
 	}
 	return message
 }
