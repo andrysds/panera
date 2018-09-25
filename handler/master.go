@@ -12,6 +12,8 @@ import (
 
 func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.MessageConfig {
 	result := entity.NotFoundMessage
+	chatID := config.MasterID
+
 	switch command {
 	// migrate
 	case "init":
@@ -24,6 +26,7 @@ func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.Message
 	// birthday
 	case "birthday_kick":
 		result = HandleBirthdayKick(bot)
+		chatID = config.BirthdayID
 
 	// standup
 	case "standup_new_day":
@@ -35,7 +38,7 @@ func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.Message
 		result = entity.NewPeriodStandupList()
 	}
 
-	message := entity.NewMessage(config.MasterID, result)
+	message := entity.NewMessage(chatID, result)
 	return message
 }
 
