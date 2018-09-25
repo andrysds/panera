@@ -31,6 +31,7 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 	now := time.Now()
 	day := now.Day()
 	month := now.Month()
+	result += fmt.Sprintf("%v-%s ", day, month)
 
 	birthdays, err := entity.Birthdays(day, month)
 	clarity.PrintIfError(err, "error on getting birthdays")
