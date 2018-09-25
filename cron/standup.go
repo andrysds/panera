@@ -17,6 +17,6 @@ func StandupJob() {
 }
 
 func StandupNewDayJob() {
-	message := handler.HandleMasterCommand("standup_new_day", app.Panera.(*app.Bot).API)
+	message := handler.HandleMasterCommand("standup_new_day", app.Panera.BotAPI())
 	app.Panera.SendMessage(message)
 }

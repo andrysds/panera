@@ -14,6 +14,10 @@ func NewCli() *Cli {
 	return &Cli{}
 }
 
+func (c *Cli) BotAPI() *tgbotapi.BotAPI {
+	return nil
+}
+
 func (c *Cli) Run() {
 	var command string
 	for {

@@ -41,6 +41,10 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	return nil
 }
 
+func (b *Bot) BotAPI() *tgbotapi.BotAPI {
+	return b.API
+}
+
 func (b *Bot) Run() {
 	http.HandleFunc("/", handler.HandleHealthz)
 	go http.ListenAndServe(":"+config.Port, nil)
