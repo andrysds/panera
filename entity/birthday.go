@@ -14,7 +14,7 @@ type Birthday struct {
 	Day    int
 	Month  time.Month
 	Name   string
-	UserId string
+	UserID int
 }
 
 func NewBirthday(data string) *Birthday {
@@ -24,7 +24,7 @@ func NewBirthday(data string) *Birthday {
 		obj.Day = clarity.Atoi(res[0])
 		obj.Month = time.Month(clarity.Atoi(res[1]))
 		obj.Name = res[2]
-		obj.UserId = res[3]
+		obj.UserID = clarity.Atoi(res[3])
 	}
 	return obj
 }

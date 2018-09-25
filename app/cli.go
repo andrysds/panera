@@ -29,7 +29,7 @@ func (c *Cli) Run() {
 func (c *Cli) Handle(command string) {
 	var message *tgbotapi.MessageConfig
 	handler.LogMessage("input", command)
-	message = handler.HandleCommand(config.MasterID, command)
+	message = handler.HandleCommand(config.MasterID, command, nil)
 	c.SendMessage(message)
 }
 

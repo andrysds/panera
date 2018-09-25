@@ -10,7 +10,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
+func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.MessageConfig {
 	result := entity.NotFoundMessage
 	switch command {
 	// migrate
@@ -21,6 +21,10 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	case "standup_list_init":
 		result = migrate.StandupListInit()
 
+	// birthday
+	case "birthday_kick":
+		result = HandleBirthdayKick(bot)
+
 	// standup
 	case "standup_new_day":
 		result = entity.NewDayStandup()
@@ -30,6 +34,7 @@ func HandleMasterCommand(command string) *tgbotapi.MessageConfig {
 	case "standup_new_period":
 		result = entity.NewPeriodStandupList()
 	}
+
 	message := entity.NewMessage(config.MasterID, result)
 	return message
 }
