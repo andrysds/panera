@@ -27,6 +27,7 @@ func HandleBirthdays(chatID int64) *tgbotapi.MessageConfig {
 }
 
 func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
+	result := "birthday\\_kick "
 	now := time.Now()
 	day := now.Day()
 	month := now.Month()
@@ -34,7 +35,6 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 	birthdays, err := entity.Birthdays(day, month)
 	clarity.PrintIfError(err, "error on getting birthdays")
 
-	result := "!!!"
 	if err == nil {
 		for _, b := range birthdays {
 			_, err := botAPI.KickChatMember(tgbotapi.KickChatMemberConfig{
@@ -44,11 +44,9 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 				},
 				UntilDate: now.Add(24 * time.Hour).Unix(),
 			})
-			clarity.PrintIfError(err, "error on kicking chat member")
-			if err == nil {
-				result += "\n" + b.Name + " sudah ditendang"
-			}
+			clarity.PrintIfError(err, "error on kicking "+b.Name)
 		}
+		result += "success"
 	}
 	return result
 }
