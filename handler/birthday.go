@@ -1,9 +1,7 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/andrysds/clarity"
@@ -33,26 +31,21 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 	now := time.Now()
 	day := now.Day()
 	month := now.Month()
-	result += fmt.Sprintf("%v-%s ", day, month)
 
 	birthdays, err := entity.Birthdays(day, month)
 	clarity.PrintIfError(err, "error on getting birthdays")
-	lbirthdays, _ := json.Marshal(birthdays)
-	log.Println(string(lbirthdays))
 
 	if err != nil {
 		result += "fail"
 	} else {
 		for _, b := range birthdays {
-			r, err := botAPI.KickChatMember(tgbotapi.KickChatMemberConfig{
+			_, err := botAPI.KickChatMember(tgbotapi.KickChatMemberConfig{
 				ChatMemberConfig: tgbotapi.ChatMemberConfig{
 					ChatID: config.BirthdayID,
 					UserID: b.UserID,
 				},
 				UntilDate: now.Add(24 * time.Hour).Unix(),
 			})
-			lr, _ := json.Marshal(r)
-			log.Println(string(lr))
 			clarity.PrintIfError(err, "error on kicking chat member")
 		}
 
