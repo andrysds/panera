@@ -70,7 +70,6 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 		message = handler.HandleGroupInvitation(chatID)
 	case update.Message.IsCommand():
 		message = handler.HandleCommand(chatID, update.Message.Command(), b.API)
-		message.ReplyToMessageID = update.Message.MessageID
 	case chatID == config.MasterID:
 		message = handler.HandleMasterMessage(update)
 	}
