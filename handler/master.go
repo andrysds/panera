@@ -15,6 +15,8 @@ func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.Message
 	// birthday
 	case "birthday_kick":
 		result = HandleBirthdayKick(bot)
+	case "birthday_unban":
+		result = HandleBirthdayUnban(bot)
 
 	// standup
 	case "standup_new_day":
