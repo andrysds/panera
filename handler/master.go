@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/andrysds/panera/config"
-	"github.com/andrysds/panera/db/migrate"
 	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -13,14 +12,6 @@ import (
 func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.MessageConfig {
 	result := entity.NotFoundMessage
 	switch command {
-	// migrate
-	case "init":
-		result = migrate.Init()
-	case "standup_init":
-		result = migrate.StandupInit()
-	case "standup_list_init":
-		result = migrate.StandupListInit()
-
 	// birthday
 	case "birthday_kick":
 		result = HandleBirthdayKick(bot)

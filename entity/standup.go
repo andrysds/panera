@@ -91,5 +91,5 @@ func NewDayStandup() string {
 	if _, _, err := NextStandup(true); err != nil {
 		return err.Error()
 	}
-	return "standup\\_new\\_day success"
+	return "standup\\_new\\_day\ndone"
 }

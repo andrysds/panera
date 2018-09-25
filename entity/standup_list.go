@@ -43,5 +43,5 @@ func NewPeriodStandupList() string {
 		return err.Error()
 	}
 
-	return "standup\\_new\\_period success"
+	return "standup\\_new\\_period\ndone"
 }
