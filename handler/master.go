@@ -34,8 +34,7 @@ func HandleMasterCommand(command string, bot *tgbotapi.BotAPI) *tgbotapi.Message
 func HandleMasterMessage(update *tgbotapi.Update) *tgbotapi.MessageConfig {
 	var message *tgbotapi.MessageConfig
 	if update.Message.ForwardFrom != nil {
-		messageText := update.Message.ForwardFrom.UserName + " "
-		messageText += strconv.Itoa(update.Message.ForwardFrom.ID)
+		messageText := strconv.Itoa(update.Message.ForwardFrom.ID)
 		message = entity.NewMessage(config.MasterID, messageText)
 	} else {
 		messageText := strings.Replace(update.Message.Text, "<bq>", "`", -1)
