@@ -10,6 +10,6 @@ func AddBirthdayJobs() {
 }
 
 func BirthdayKickJob() {
-	message := handler.HandleMasterCommand("standup_birthday_kick", app.Panera.BotAPI())
+	message := handler.HandleMasterCommand("birthday_kick", app.Panera.BotAPI())
 	app.Panera.SendMessage(message)
 }
