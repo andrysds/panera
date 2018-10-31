@@ -9,7 +9,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
+func HandleCommand(chatID int64, command string, bot *tgbotapi.BotAPI) *tgbotapi.MessageConfig {
 	var message *tgbotapi.MessageConfig
 	switch command {
 	case "standup":
@@ -18,9 +18,11 @@ func HandleCommand(chatID int64, command string) *tgbotapi.MessageConfig {
 		message = HandleStandupList(chatID)
 	case "standup_skip":
 		message = HandleStandupSkip(chatID)
+	case "birthdays":
+		message = HandleBirthdays(chatID)
 	default:
 		if chatID == config.MasterID {
-			message = HandleMasterCommand(command)
+			message = HandleMasterCommand(command, bot)
 		}
 	}
 	return message

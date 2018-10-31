@@ -5,9 +5,8 @@ import (
 )
 
 const (
-	OKMessage           = "ok"           // 200
-	UnauthorizedMessage = "unauthorized" // 401
-	NotFoundMessage     = "not found"    // 404
+	OKMessage       = "ok"        // 200
+	NotFoundMessage = "not found" // 404
 )
 
 func NewMessage(chatID int64, text string) *tgbotapi.MessageConfig {

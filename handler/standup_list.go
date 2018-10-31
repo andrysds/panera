@@ -3,12 +3,11 @@ package handler
 import (
 	"github.com/andrysds/clarity"
 	"github.com/andrysds/panera/entity"
-	"github.com/andrysds/panera/entity/standup"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
 func HandleStandupList(chatID int64) *tgbotapi.MessageConfig {
-	standups, err := standup.CurrentList()
+	standups, err := entity.CurrentStandupList()
 	clarity.PrintIfError(err, "error on get standup list")
 
 	messageText := "Stand up lead periode ini:"

@@ -14,11 +14,18 @@ func NewCli() *Cli {
 	return &Cli{}
 }
 
+func (c *Cli) BotAPI() *tgbotapi.BotAPI {
+	return nil
+}
+
 func (c *Cli) Run() {
 	var command string
 	for {
 		fmt.Print("> ")
 		fmt.Scan(&command)
+		if command == "exit" {
+			return
+		}
 		c.Handle(command)
 	}
 }
@@ -26,7 +33,7 @@ func (c *Cli) Run() {
 func (c *Cli) Handle(command string) {
 	var message *tgbotapi.MessageConfig
 	handler.LogMessage("input", command)
-	message = handler.HandleCommand(config.MasterID, command)
+	message = handler.HandleCommand(config.MasterID, command, nil)
 	c.SendMessage(message)
 }
 

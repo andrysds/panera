@@ -41,9 +41,15 @@ func NewUpdates(API *tgbotapi.BotAPI) tgbotapi.UpdatesChannel {
 	return nil
 }
 
+func (b *Bot) BotAPI() *tgbotapi.BotAPI {
+	return b.API
+}
+
 func (b *Bot) Run() {
 	http.HandleFunc("/", handler.HandleHealthz)
 	go http.ListenAndServe(":"+config.Port, nil)
+	log.Println("* Listening on tcp://0.0.0.0:" + config.Port)
+	log.Println("Use Ctrl-C to stop")
 
 	for update := range b.Updates {
 		b.Handle(&update)
@@ -63,8 +69,7 @@ func (b *Bot) Handle(update *tgbotapi.Update) {
 	case b.IsAddedToGroup(update):
 		message = handler.HandleGroupInvitation(chatID)
 	case update.Message.IsCommand():
-		message = handler.HandleCommand(chatID, update.Message.Command())
-		message.ReplyToMessageID = update.Message.MessageID
+		message = handler.HandleCommand(chatID, update.Message.Command(), b.API)
 	case chatID == config.MasterID:
 		message = handler.HandleMasterMessage(update)
 	}

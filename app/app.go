@@ -10,6 +10,7 @@ import (
 var Panera App
 
 type App interface {
+	BotAPI() *tgbotapi.BotAPI
 	Run()
 	SendMessage(*tgbotapi.MessageConfig)
 }

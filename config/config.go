@@ -16,8 +16,9 @@ var (
 
 	RedisUrl string
 
-	MasterID int64
-	SquadID  int64
+	MasterID   int64
+	SquadID    int64
+	BirthdayID int64
 
 	Username string
 	Password string
@@ -35,9 +36,7 @@ func Init() {
 
 	MasterID, _ = strconv.ParseInt(os.Getenv("MASTER_ID"), 10, 64)
 	SquadID, _ = strconv.ParseInt(os.Getenv("SQUAD_ID"), 10, 64)
-
-	Username = os.Getenv("USERNAME")
-	Password = os.Getenv("PASSWORD")
+	BirthdayID, _ = strconv.ParseInt(os.Getenv("BIRTHDAY_ID"), 10, 64)
 
 	log.Println("* Config initialized")
 }

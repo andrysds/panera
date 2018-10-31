@@ -12,6 +12,7 @@ func Init() {
 	Cron = cron.New()
 
 	AddStandupJobs()
+	AddBirthdayJobs()
 
 	go Cron.Start()
 	log.Println("* Cron initialized")
