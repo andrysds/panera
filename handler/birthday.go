@@ -50,7 +50,7 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 	return messageText
 }
 
-func HandleBirthdayUnban(botAPI *tgbotapi.BotAPI) string {
+func HandleBirthdayLink(botAPI *tgbotapi.BotAPI) string {
 	messageText, err := botAPI.GetInviteLink(
 		tgbotapi.ChatConfig{
 			ChatID: config.BirthdayID,
