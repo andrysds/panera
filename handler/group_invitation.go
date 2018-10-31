@@ -23,5 +23,6 @@ func IsAddedToGroup(update *tgbotapi.Update) bool {
 func HandleGroupInvitation(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	message := "I was invited to " + strconv.FormatInt(update.Message.Chat.ID, 10)
 	update.Message.Chat.ID = config.MasterID
+	update.Message.MessageID = 0
 	botAPI.Send(entity.NewMessage(update, message))
 }
