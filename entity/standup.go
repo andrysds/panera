@@ -70,7 +70,7 @@ func NextStandup(fromBeginning bool) (*Standup, *Standup, error) {
 			return objs[i], current, err
 		}
 	}
-	return obj, current, errors.New("not found")
+	return obj, current, errors.New(NotFoundMessage)
 }
 
 func NewDayStandup() string {

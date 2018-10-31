@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/andrysds/clarity"
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -37,14 +38,18 @@ func HandleStandupList(update *tgbotapi.Update, botAPI entity.BotAPI) {
 func HandleStandupNewDay(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	result := entity.NewDayStandup()
 	if result == entity.NotFoundMessage {
-		result = entity.NewPeriodStandupList()
+		HandleStandupNewPeriod(update, botAPI)
+	} else {
+		botAPI.Send(entity.NewMessage(update, result))
 	}
-	botAPI.Send(entity.NewMessage(update, result))
 }
 
 func HandleStandupNewPeriod(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	result := entity.NewPeriodStandupList()
 	botAPI.Send(entity.NewMessage(update, result))
+
+	update.Message.Chat.ID = config.SquadID
+	HandleStandupList(update, botAPI)
 }
 
 func HandleStandupSkip(update *tgbotapi.Update, botAPI entity.BotAPI) {
@@ -55,7 +60,7 @@ func HandleStandupSkip(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	if err == nil {
 		message = "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
 		message = fmt.Sprintf(message, current.Name, standup.Name, standup.Username)
-	} else if err.Error() == "not found" {
+	} else if err.Error() == entity.NotFoundMessage {
 		message = "Waduh ga ada gantinya lagi nih!"
 	}
 	botAPI.Send(entity.NewMessage(update, message))
