@@ -59,6 +59,7 @@ func HandleMasterMessage(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	} else {
 		message = strings.Replace(update.Message.Text, "<bq>", "`", -1)
 		update.Message.Chat.ID = config.SquadID
+		update.Message.MessageID = 0
 	}
 	msg, _ := botAPI.Send(entity.NewMessage(update, message))
 	log.Println(msg.Text)
