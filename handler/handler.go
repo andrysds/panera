@@ -3,37 +3,59 @@ package handler
 import (
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleCommand(chatID int64, command string, bot *tgbotapi.BotAPI) *tgbotapi.MessageConfig {
-	var message *tgbotapi.MessageConfig
-	switch command {
-	case "standup":
-		message = HandleStandup(chatID)
-	case "standup_list":
-		message = HandleStandupList(chatID)
-	case "standup_skip":
-		message = HandleStandupSkip(chatID)
-	case "birthdays":
-		message = HandleBirthdays(chatID)
-	default:
-		if chatID == config.MasterID {
-			message = HandleMasterCommand(command, bot)
-		}
+func HandleUpdate(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if update.Message == nil {
+		return
 	}
-	return message
+	entity.LogMessage(update.Message.From.UserName, update.Message.Text)
+
+	switch {
+	case IsAddedToGroup(update):
+		HandleGroupInvitation(update, botAPI)
+
+	case update.Message.IsCommand():
+		switch update.Message.Command() {
+		// birthday
+		case "birthdays":
+			HandleBirthdays(update, botAPI)
+		case "birthday_kick":
+			HandleBirthdayKick(update, botAPI)
+		case "birthday_link":
+			HandleBirthdayLink(update, botAPI)
+
+		// standup
+		case "standup":
+			HandleStandup(update, botAPI)
+		case "standup_list":
+			HandleStandupList(update, botAPI)
+		case "standup_new_day":
+			HandleStandupNewDay(update, botAPI)
+		case "standup_new_period":
+			HandleStandupNewPeriod(update, botAPI)
+		case "standup_skip":
+			HandleStandupSkip(update, botAPI)
+		}
+
+	default:
+		HandleMasterMessage(update, botAPI)
+	}
 }
 
-func HandleGroupInvitation(chatID int64) *tgbotapi.MessageConfig {
-	messageText := "I was invited to " + strconv.FormatInt(chatID, 10)
-	message := entity.NewMessage(config.MasterID, messageText)
-	return message
-}
-
-func LogMessage(caller, message string) {
-	log.Printf("[%s] %s\n", caller, message)
+func HandleMasterMessage(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	message := ""
+	if update.Message.ForwardFrom != nil {
+		message = strconv.Itoa(update.Message.ForwardFrom.ID)
+	} else {
+		message = strings.Replace(update.Message.Text, "<bq>", "`", -1)
+		update.Message.Chat.ID = config.SquadID
+	}
+	msg, _ := botAPI.Send(entity.NewMessage(update, message))
+	log.Println(msg.Text)
 }

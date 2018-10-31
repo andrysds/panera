@@ -4,15 +4,14 @@ import (
 	"log"
 
 	"github.com/andrysds/panera/config"
-	"gopkg.in/telegram-bot-api.v4"
+	"github.com/andrysds/panera/entity"
 )
 
 var Panera App
 
 type App interface {
-	BotAPI() *tgbotapi.BotAPI
+	GetBotAPI() entity.BotAPI
 	Run()
-	SendMessage(*tgbotapi.MessageConfig)
 }
 
 func Init() {

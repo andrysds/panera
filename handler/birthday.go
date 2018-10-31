@@ -10,22 +10,23 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleBirthdays(chatID int64) *tgbotapi.MessageConfig {
-	messageText := "Birthdays:"
+func HandleBirthdays(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	message := "Birthdays:"
 
 	birthdays, err := entity.Birthdays(0, 0)
 	clarity.PrintIfError(err, "error on getting birthdays")
 
 	if err == nil {
 		for _, b := range birthdays {
-			messageText += fmt.Sprintf("\n%v %s - %s", b.Day, b.Month, b.Name)
+			message += fmt.Sprintf("\n%v %s - %s", b.Day, b.Month, b.Name)
 		}
 	}
-	return entity.NewMessage(chatID, messageText)
+	botAPI.Send(entity.NewMessage(update, message))
 }
 
-func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
-	messageText := "birthday\\_kick"
+func HandleBirthdayKick(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	message := "birthday\\_kick"
+
 	tomorrow := time.Now().Add(24 * time.Hour)
 	day := tomorrow.Day()
 	month := tomorrow.Month()
@@ -42,22 +43,22 @@ func HandleBirthdayKick(botAPI *tgbotapi.BotAPI) string {
 				},
 			})
 			if err != nil {
-				messageText += "\n" + b.Name + " gagal ditendang!"
+				message += "\n" + b.Name + " gagal ditendang!"
 			}
 		}
-		messageText += "\ndone"
+		message += "\ndone"
 	}
-	return messageText
+	botAPI.Send(entity.NewMessage(update, message))
 }
 
-func HandleBirthdayLink(botAPI *tgbotapi.BotAPI) string {
-	messageText, err := botAPI.GetInviteLink(
+func HandleBirthdayLink(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	message, err := botAPI.GetInviteLink(
 		tgbotapi.ChatConfig{
 			ChatID: config.BirthdayID,
 		},
 	)
 	if err != nil {
-		messageText = err.Error()
+		message = err.Error()
 	}
-	return messageText
+	botAPI.Send(entity.NewMessage(update, message))
 }

@@ -8,30 +8,55 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func HandleStandup(chatID int64) *tgbotapi.MessageConfig {
+func HandleStandup(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	standup, err := entity.CurrentStandup()
 	clarity.PrintIfError(err, "error on get standup")
 
 	messageTemplate := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah _%s_ (@%s)"
-	messageText := fmt.Sprintf(messageTemplate, standup.Name, standup.Username)
-
-	message := entity.NewMessage(chatID, messageText)
-	return message
+	message := fmt.Sprintf(messageTemplate, standup.Name, standup.Username)
+	botAPI.Send(entity.NewMessage(update, message))
 }
 
-func HandleStandupSkip(chatID int64) *tgbotapi.MessageConfig {
+func HandleStandupList(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	standups, err := entity.CurrentStandupList()
+	clarity.PrintIfError(err, "error on get standup list")
+
+	message := "Stand up lead periode ini:"
+	for _, s := range standups {
+		message += "\n"
+		if s.State == "1" {
+			message += "`[x]` "
+		} else {
+			message += "`[ ]` "
+		}
+		message += s.Name
+	}
+	botAPI.Send(entity.NewMessage(update, message))
+}
+
+func HandleStandupNewDay(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	result := entity.NewDayStandup()
+	if result == entity.NotFoundMessage {
+		result = entity.NewPeriodStandupList()
+	}
+	botAPI.Send(entity.NewMessage(update, result))
+}
+
+func HandleStandupNewPeriod(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	result := entity.NewPeriodStandupList()
+	botAPI.Send(entity.NewMessage(update, result))
+}
+
+func HandleStandupSkip(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	standup, current, err := entity.NextStandup(false)
 	clarity.PrintIfError(err, "error on skipping standup")
 
+	message := ""
 	if err == nil {
-		messageTemplate := "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
-		messageText := fmt.Sprintf(messageTemplate, current.Name, standup.Name, standup.Username)
-		message := entity.NewMessage(chatID, messageText)
-		return message
+		message = "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
+		message = fmt.Sprintf(message, current.Name, standup.Name, standup.Username)
 	} else if err.Error() == "not found" {
-		messageText := "Waduh ga ada gantinya lagi nih!"
-		message := entity.NewMessage(chatID, messageText)
-		return message
+		message = "Waduh ga ada gantinya lagi nih!"
 	}
-	return nil
+	botAPI.Send(entity.NewMessage(update, message))
 }

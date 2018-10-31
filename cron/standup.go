@@ -12,11 +12,15 @@ func AddStandupJobs() {
 }
 
 func StandupJob() {
-	message := handler.HandleStandup(config.SquadID)
-	app.Panera.SendMessage(message)
+	handler.HandleStandup(
+		UpdateFromCron(config.SquadID),
+		app.Panera.GetBotAPI(),
+	)
 }
 
 func StandupNewDayJob() {
-	message := handler.HandleMasterCommand("standup_new_day", app.Panera.BotAPI())
-	app.Panera.SendMessage(message)
+	handler.HandleStandupNewDay(
+		UpdateFromCron(config.MasterID),
+		app.Panera.GetBotAPI(),
+	)
 }
