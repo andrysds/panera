@@ -3,6 +3,7 @@ package cron
 import (
 	"log"
 
+	"github.com/andrysds/panera/entity"
 	"github.com/robfig/cron"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -20,7 +21,7 @@ func Init() {
 }
 
 func UpdateFromCron(chatId int64) *tgbotapi.Update {
-	update := &tgbotapi.Update{}
+	update := entity.BlankUpdate
 	update.Message.Chat.ID = chatId
 	return update
 }
