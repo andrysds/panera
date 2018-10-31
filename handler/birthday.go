@@ -25,8 +25,11 @@ func HandleBirthdays(update *tgbotapi.Update, botAPI entity.BotAPI) {
 }
 
 func HandleBirthdayKick(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	message := "birthday\\_kick"
+	if !IsFromMaster(update) {
+		return
+	}
 
+	message := "birthday\\_kick"
 	tomorrow := time.Now().Add(24 * time.Hour)
 	day := tomorrow.Day()
 	month := tomorrow.Month()
@@ -52,6 +55,9 @@ func HandleBirthdayKick(update *tgbotapi.Update, botAPI entity.BotAPI) {
 }
 
 func HandleBirthdayLink(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if !IsFromMaster(update) {
+		return
+	}
 	message, err := botAPI.GetInviteLink(
 		tgbotapi.ChatConfig{
 			ChatID: config.BirthdayID,

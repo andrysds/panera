@@ -48,6 +48,10 @@ func HandleUpdate(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	}
 }
 
+func IsFromMaster(update *tgbotapi.Update) bool {
+	return update.Message.Chat.ID == config.MasterID
+}
+
 func HandleMasterMessage(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	message := ""
 	if update.Message.ForwardFrom != nil {

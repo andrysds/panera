@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
@@ -31,8 +32,9 @@ func (c *Cli) Run() {
 		if command == "exit" {
 			return
 		}
-		update.Message.Text = "/" + command
+		update.Message.Chat.ID = config.MasterID
 		update.Message.From.UserName = "master"
+		update.Message.Text = "/" + command
 		update.Message.Entities = &[]tgbotapi.MessageEntity{
 			tgbotapi.MessageEntity{
 				Type:   "bot_command",

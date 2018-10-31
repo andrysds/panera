@@ -36,6 +36,10 @@ func HandleStandupList(update *tgbotapi.Update, botAPI entity.BotAPI) {
 }
 
 func HandleStandupNewDay(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if !IsFromMaster(update) {
+		return
+	}
+
 	result := entity.NewDayStandup()
 	if result == entity.NotFoundMessage {
 		HandleStandupNewPeriod(update, botAPI)
@@ -45,6 +49,10 @@ func HandleStandupNewDay(update *tgbotapi.Update, botAPI entity.BotAPI) {
 }
 
 func HandleStandupNewPeriod(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if !IsFromMaster(update) {
+		return
+	}
+
 	result := entity.NewPeriodStandupList()
 	botAPI.Send(entity.NewMessage(update, result))
 

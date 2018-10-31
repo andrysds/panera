@@ -3,6 +3,7 @@ package handler
 import (
 	"strconv"
 
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
 	"gopkg.in/telegram-bot-api.v4"
 )
@@ -21,5 +22,6 @@ func IsAddedToGroup(update *tgbotapi.Update) bool {
 
 func HandleGroupInvitation(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	message := "I was invited to " + strconv.FormatInt(update.Message.Chat.ID, 10)
+	update.Message.Chat.ID = config.MasterID
 	botAPI.Send(entity.NewMessage(update, message))
 }
