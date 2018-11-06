@@ -53,6 +53,10 @@ func IsFromMaster(update *tgbotapi.Update) bool {
 }
 
 func HandleMasterMessage(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if !IsFromMaster(update) {
+		return
+	}
+
 	message := ""
 	if update.Message.ForwardFrom != nil {
 		message = strconv.Itoa(update.Message.ForwardFrom.ID)
