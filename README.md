@@ -6,15 +6,15 @@ Bukalapak PNR Squad Assistant
 
 ### Public Commands
 
+- /birthdays
 - /standup
 - /standup_list
 - /standup_skip
 
 ### Master Commands
 
-- /init
-- /init_standup
-- /init_standup_list
+- /birthday_kick
+- /birthday_link
 - /standup_new_day
 - /standup_new_period
 

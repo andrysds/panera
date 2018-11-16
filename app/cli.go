@@ -4,41 +4,44 @@ import (
 	"fmt"
 
 	"github.com/andrysds/panera/config"
+	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/handler"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-type Cli struct{}
-
-func NewCli() *Cli {
-	return &Cli{}
+type Cli struct {
+	BotAPI entity.BotAPI
 }
 
-func (c *Cli) BotAPI() *tgbotapi.BotAPI {
-	return nil
+func NewCli() *Cli {
+	return &Cli{
+		BotAPI: entity.NewCliBotAPI(),
+	}
+}
+
+func (c *Cli) GetBotAPI() entity.BotAPI {
+	return c.BotAPI
 }
 
 func (c *Cli) Run() {
 	var command string
+	update := entity.BlankUpdate
 	for {
 		fmt.Print("> ")
 		fmt.Scan(&command)
 		if command == "exit" {
 			return
 		}
-		c.Handle(command)
-	}
-}
-
-func (c *Cli) Handle(command string) {
-	var message *tgbotapi.MessageConfig
-	handler.LogMessage("input", command)
-	message = handler.HandleCommand(config.MasterID, command, nil)
-	c.SendMessage(message)
-}
-
-func (c *Cli) SendMessage(message *tgbotapi.MessageConfig) {
-	if message != nil {
-		handler.LogMessage("output", message.Text)
+		update.Message.Chat.ID = config.MasterID
+		update.Message.From.UserName = "master"
+		update.Message.Text = "/" + command
+		update.Message.Entities = &[]tgbotapi.MessageEntity{
+			tgbotapi.MessageEntity{
+				Type:   "bot_command",
+				Offset: 0,
+				Length: len(update.Message.Text),
+			},
+		}
+		handler.HandleUpdate(update, c.BotAPI)
 	}
 }

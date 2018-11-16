@@ -2,6 +2,7 @@ package cron
 
 import (
 	"github.com/andrysds/panera/app"
+	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/handler"
 )
 
@@ -10,6 +11,8 @@ func AddBirthdayJobs() {
 }
 
 func BirthdayKickJob() {
-	message := handler.HandleMasterCommand("birthday_kick", app.Panera.BotAPI())
-	app.Panera.SendMessage(message)
+	handler.HandleBirthdayKick(
+		UpdateFromCron(config.MasterID),
+		app.Panera.GetBotAPI(),
+	)
 }
