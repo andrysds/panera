@@ -68,3 +68,22 @@ func HandleBirthdayLink(update *tgbotapi.Update, botAPI entity.BotAPI) {
 	}
 	botAPI.Send(entity.NewMessage(update, message))
 }
+
+func HandleBirthdayUnban(update *tgbotapi.Update, botAPI entity.BotAPI) {
+	if !IsFromMaster(update) {
+		return
+	}
+	_, err := botAPI.UnbanChatMember(
+		tgbotapi.ChatMemberConfig{
+			ChatID: config.BirthdayID,
+			UserID: int(config.MasterID),
+		},
+	)
+	message := ""
+	if err != nil {
+		message = "fail"
+	} else {
+		message = "success"
+	}
+	botAPI.Send(entity.NewMessage(update, message))
+}

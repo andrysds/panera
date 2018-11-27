@@ -7,6 +7,7 @@ import (
 type BotAPI interface {
 	Send(tgbotapi.Chattable) (tgbotapi.Message, error)
 	KickChatMember(tgbotapi.KickChatMemberConfig) (tgbotapi.APIResponse, error)
+	UnbanChatMember(tgbotapi.ChatMemberConfig) (tgbotapi.APIResponse, error)
 	GetInviteLink(tgbotapi.ChatConfig) (string, error)
 }
 
@@ -24,6 +25,10 @@ func (c *CliBotAPI) Send(chattable tgbotapi.Chattable) (tgbotapi.Message, error)
 }
 
 func (c *CliBotAPI) KickChatMember(config tgbotapi.KickChatMemberConfig) (tgbotapi.APIResponse, error) {
+	return tgbotapi.APIResponse{}, nil
+}
+
+func (c *CliBotAPI) UnbanChatMember(config tgbotapi.ChatMemberConfig) (tgbotapi.APIResponse, error) {
 	return tgbotapi.APIResponse{}, nil
 }
 

@@ -29,6 +29,8 @@ func HandleUpdate(update *tgbotapi.Update, botAPI entity.BotAPI) {
 			HandleBirthdayKick(update, botAPI)
 		case "birthday_link":
 			HandleBirthdayLink(update, botAPI)
+		case "birthday_unban":
+			HandleBirthdayUnban(update, botAPI)
 
 		// standup
 		case "standup":
