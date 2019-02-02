@@ -1,12 +1,14 @@
-dep:
-	go get -u github.com/golang/dep/cmd/dep
-	dep ensure -v
+all: pretty test build run
 
 pretty:
 	gofmt -w .
-
-compile:
-	go build -o panera .
-
-run: pretty compile
-	./panera
+test:
+	go test -race -v .
+coverage:
+	go test -race -v -cover -coverprofile=coverage.out .
+cover:
+	go tool cover -html=coverage.out
+build:
+	go build
+run:
+	go run main.go
