@@ -2,22 +2,21 @@ package db
 
 import (
 	"log"
+	"os"
 
 	"github.com/andrysds/clarity"
-	"github.com/andrysds/panera/config"
-	"github.com/go-redis/redis"
+	"github.com/globalsign/mgo"
 )
 
-var Redis *redis.Client
+// DB represents project database
+var DB *mgo.Database
 
-func InitRedis() {
-	options, err := redis.ParseURL(config.RedisUrl)
-	clarity.PanicIfError(err, "error on parsing redis url")
-
-	client := redis.NewClient(options)
-	_, err = client.Ping().Result()
-	clarity.PanicIfError(err, "error on connecting to redis")
-
-	Redis = client
-	log.Println("* Redis initialized")
+// Init initiates databse connection
+func Init() {
+	mongoURL := os.Getenv("MONGODB_URI")
+	log.Println(mongoURL)
+	session, err := mgo.Dial(mongoURL)
+	clarity.PanicIfError(err, "error on connecting to database")
+	DB = session.DB("")
+	log.Println("* DB initialized")
 }
