@@ -11,10 +11,9 @@ import (
 // DB represents project database
 var DB *mgo.Database
 
-// Init initiates databse connection
+// Init initializes database connection
 func Init() {
 	mongoURL := os.Getenv("MONGODB_URI")
-	log.Println(mongoURL)
 	session, err := mgo.Dial(mongoURL)
 	clarity.PanicIfError(err, "error on connecting to database")
 	DB = session.DB("")
