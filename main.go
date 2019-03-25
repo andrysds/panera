@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/andrysds/panera/db"
 	"github.com/andrysds/panera/route"
+	"github.com/andrysds/panera/template"
 	"github.com/subosito/gotenv"
 )
 
@@ -14,9 +16,9 @@ func main() {
 
 	gotenv.Load()
 	db.Init()
-	route.Init()
+	template.Init()
 
-	log.Println("* Listening on :8080")
+	log.Println("* Listening")
 	log.Println("Use Ctrl-C to stop")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":"+os.Getenv("PORT"), route.Router())
 }

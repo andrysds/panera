@@ -8,10 +8,10 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-// DB represents project database
+// DB represents application database
 var DB *mgo.Database
 
-// Init initializes database connection
+// Init initializes application database connection
 func Init() {
 	mongoURL := os.Getenv("MONGODB_URI")
 	session, err := mgo.Dial(mongoURL)

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "base-head" }}
+        <title>Panera</title>
+    </head>
+    <body>
+        {{ template "header" }}
+        <main role="main">
+            <section class="jumbotron">
+                <div class="container">
+                    <div class="row vertical-center">
+                        <div class="col-10">
+                            <h1>{{ . }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        {{ template "js" }}
+    </body>
+</html>

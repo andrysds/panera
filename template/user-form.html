@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "base-head" }}
+        <title>{{ .PageTitle }} | Panera</title>
+    </head>
+    <body>
+        {{ template "header" }}
+        <main role="main">
+            <section class="jumbotron">
+                <div class="container">
+                    <div class="row vertical-center">
+                        <div class="col-10">
+                            <h1>{{ .PageTitle }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <form method="POST" action="{{ .FormAction }}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" id="name" name="name" value="{{ .User.Name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input class="form-control" id="username" name="username" value="{{ .User.Username }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Birthday</label>
+                            <input class="form-control" id="birthday" name="birthday" value="{{ .User.Birthday }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <input class="form-control" id="role" name="role" value="{{ .User.Role }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+        {{ template "js" }}
+    </body>
+</html>
