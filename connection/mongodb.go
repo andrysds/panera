@@ -1,4 +1,4 @@
-package db
+package connection
 
 import (
 	"log"
@@ -8,14 +8,14 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-// DB represents application database
-var DB *mgo.Database
+// MongoDB represents MongoDB connection
+var MongoDB *mgo.Database
 
-// Init initializes application database connection
-func Init() {
+// InitMongoDB initializes MongoDB connection
+func InitMongoDB() {
 	mongoURL := os.Getenv("MONGODB_URI")
 	session, err := mgo.Dial(mongoURL)
 	clarity.PanicIfError(err, "error on connecting to database")
-	DB = session.DB("")
-	log.Println("* DB initialized")
+	MongoDB = session.DB("")
+	log.Println("* MongoDB initialized")
 }

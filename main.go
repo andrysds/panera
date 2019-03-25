@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/andrysds/panera/db"
+	"github.com/andrysds/panera/connection"
 	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/route"
 	"github.com/andrysds/panera/template"
@@ -16,7 +16,7 @@ func main() {
 	log.Println("Panera starting...")
 
 	gotenv.Load()
-	db.Init()
+	connection.Init()
 	entity.InitCollection()
 	template.Init()
 

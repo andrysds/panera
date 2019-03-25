@@ -3,7 +3,7 @@ package entity
 import (
 	"log"
 
-	"github.com/andrysds/panera/db"
+	"github.com/andrysds/panera/connection"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
@@ -38,7 +38,7 @@ func (c *Collection) RemoveOne(id string) error {
 
 // InitCollection initiates collection connections
 func InitCollection() {
-	Standups = &Collection{*db.DB.C("standups")}
-	Users = &Collection{*db.DB.C("users")}
+	Standups = &Collection{*connection.MongoDB.C("standups")}
+	Users = &Collection{*connection.MongoDB.C("users")}
 	log.Println("* Collection initialized")
 }

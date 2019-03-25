@@ -24,6 +24,7 @@ Send a pull request from your fork branch. [How?](https://help.github.com/articl
 
 - Go
 - MongoDB
+- Redis
 
 ## How to run locally
 
