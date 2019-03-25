@@ -16,6 +16,7 @@ func main() {
 
 	gotenv.Load()
 	db.Init()
+	entity.InitCollection()
 	template.Init()
 
 	log.Println("* Listening")

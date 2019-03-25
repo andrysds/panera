@@ -13,8 +13,6 @@ Bukalapak PNR Squad Assistant
 
 ### Master Commands
 
-- /birthday_kick
-- /birthday_link
 - /standup_new_day
 - /standup_new_period
 
@@ -25,7 +23,7 @@ Send a pull request from your fork branch. [How?](https://help.github.com/articl
 ## Requirements
 
 - Go
-- Redis
+- MongoDB
 
 ## How to run locally
 
@@ -39,8 +37,6 @@ Send a pull request from your fork branch. [How?](https://help.github.com/articl
   make run
   ```
 
-- Access the commands via curl, postman, or web browser
+- Access the commands via web browser
 
-  ```sh
-  curl -u panera:panera http://localhost:9542/init
-  ```
+  http://localhost:9542/
