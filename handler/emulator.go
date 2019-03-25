@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 
-	"github.com/andrysds/panera/handler/message"
 	"github.com/andrysds/panera/template"
 )
 
@@ -20,7 +19,7 @@ func Emulator(w http.ResponseWriter, r *http.Request) {
 			FormAction: "/emulator",
 		},
 		Command:  command,
-		Response: message.Message(command),
+		Response: Message(command),
 	}
 	template.Execute(w, "emulator.html", data)
 }

@@ -1,8 +1,10 @@
 package entity
 
 import (
+	"log"
 	"time"
 
+	"github.com/andrysds/panera/connection"
 	"github.com/globalsign/mgo/bson"
 )
 
@@ -28,4 +30,18 @@ func (s *Standup) User() User {
 func (s *Standup) SetDone() error {
 	s.State = "done"
 	return Standups.UpdateOne(s.ID.Hex(), s)
+}
+
+// GetTodayStandup pick one random standup record
+func GetTodayStandup() (result Standup) {
+	id, err := connection.Redis.Get("panera:standup").Result()
+	log.Println(id, err)
+	if len(id) == 0 {
+		Standups.Pipe([]bson.M{{"$sample": bson.M{"size": 1}}}).One(&result)
+		err := connection.Redis.Set("panera:standup", result.ID.Hex(), 0).Err()
+		log.Println(err)
+	} else {
+		Standups.FindOne(id, &result)
+	}
+	return result
 }
