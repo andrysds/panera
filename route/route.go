@@ -28,10 +28,20 @@ func Router() *chi.Mux {
 		r.Get("/new", handler.NewUser)
 		r.Post("/", handler.CreateUser)
 		r.Route("/{id}", func(r chi.Router) {
+			r.Get("/add-to-standups", handler.AddToStandups)
 			r.Get("/edit", handler.EditUser)
 			r.Post("/", handler.UpdateUser)
 			r.Get("/delete", handler.DeleteUser)
 		})
 	})
+
+	r.Route("/standups", func(r chi.Router) {
+		r.Get("/", handler.Standups)
+		r.Route("/{id}", func(r chi.Router) {
+			r.Get("/set-done", handler.SetDone)
+			r.Get("/delete", handler.DeleteStandup)
+		})
+	})
+
 	return r
 }

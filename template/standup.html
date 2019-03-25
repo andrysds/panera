@@ -13,9 +13,6 @@
                         <div class="col-10">
                             <h1>{{ .PageTitle }}</h1>
                         </div>
-                        <div class="col-2 text-right">
-                            <a href="/users/new" role="button" class="btn btn-primary btn">Create</a>
-                        </div>
                     </div>
                 </div>
                 {{ if .PastAction }}
@@ -31,24 +28,22 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Birthday</th>
-                                <th>Role</th>
+                                <th>State</th>
+                                <th>Timestamp</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{ range .Users }}
+                            {{ range .Standups }}
                             <tr>
                                 <td class="align-middle">{{ .ID.Hex }}</td>
-                                <td class="align-middle">{{ .Name }}</td>
-                                <td class="align-middle">{{ .Username }}</td>
-                                <td class="align-middle">{{ .Birthday }}</td>
-                                <td class="align-middle">{{ .Role }}</td>
+                                <td class="align-middle">{{ .User.Name }}</td>
+                                <td class="align-middle">{{ .State }}</td>
+                                <td class="align-middle">{{ .Timestamp }}</td>
                                 <td class="align-middle">
-                                    <a href="/users/{{ .ID.Hex }}/add-to-standups" role="button" class="btn btn-success btn-sm">Standup</a>
-                                    <a href="/users/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="/users/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="/standups/{{ .ID.Hex }}/set-done" role="button" class="btn btn-success btn-sm">Done</a>
+                                    <a href="/standups/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/standups/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
                             {{end}}

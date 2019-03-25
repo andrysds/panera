@@ -4,7 +4,8 @@ import "github.com/andrysds/panera/entity"
 
 // Birthdays is message handler for /birthdays
 func Birthdays() string {
-	users, err := entity.Users().All()
+	var users []entity.User
+	err := entity.Users.All("birthday", &users)
 	if err != nil {
 		return err.Error()
 	}

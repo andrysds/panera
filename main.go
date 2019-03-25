@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/andrysds/panera/db"
+	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/route"
 	"github.com/andrysds/panera/template"
 	"github.com/subosito/gotenv"

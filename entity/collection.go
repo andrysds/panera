@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"log"
+
 	"github.com/andrysds/panera/db"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -10,15 +12,13 @@ import (
 type Collection struct{ mgo.Collection }
 
 // All returns all documents
-func (c *Collection) All() (result []interface{}, err error) {
-	err = c.Find(nil).All(&result)
-	return result, err
+func (c *Collection) All(sort string, result interface{}) error {
+	return c.Find(nil).Sort(sort).All(result)
 }
 
 // FindOne returns a document by id
-func (c *Collection) FindOne(id string) (result interface{}, err error) {
-	err = c.FindId(bson.ObjectIdHex(id)).One(&result)
-	return result, err
+func (c *Collection) FindOne(id string, result interface{}) error {
+	return c.FindId(bson.ObjectIdHex(id)).One(result)
 }
 
 // InsertOne inserts a new document
@@ -40,4 +40,5 @@ func (c *Collection) RemoveOne(id string) error {
 func InitCollection() {
 	Standups = &Collection{*db.DB.C("standups")}
 	Users = &Collection{*db.DB.C("users")}
+	log.Println("* Collection initialized")
 }
