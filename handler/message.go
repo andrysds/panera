@@ -45,7 +45,7 @@ func standupList() string {
 	message := "Stand up lead periode ini:"
 	for _, s := range standups {
 		message += "\n"
-		if s.State == "1" {
+		if s.State == "done" {
 			message += "`[x]` "
 		} else {
 			message += "`[ ]` "
