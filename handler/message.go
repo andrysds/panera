@@ -15,6 +15,8 @@ func Message(command string) string {
 		return standup()
 	case "/standup_list":
 		return standupList()
+	case "/standup_new_day":
+		return standupNewDay()
 	}
 	return ""
 }
@@ -53,4 +55,11 @@ func standupList() string {
 		message += s.User().Name
 	}
 	return message
+}
+
+func standupNewDay() string {
+	if err := entity.NewDayStandup(); err != nil {
+		return err.Error()
+	}
+	return "ok"
 }

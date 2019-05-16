@@ -8,6 +8,8 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
+const standupKey = "panera:standup"
+
 // Standups represents standup collection
 var Standups *Collection
 
@@ -33,12 +35,12 @@ func (s *Standup) SetDone() error {
 }
 
 // GetTodayStandup pick one random standup record
-func GetTodayStandup() (result Standup) {
-	id, err := connection.Redis.Get("panera:standup").Result()
+func GetTodayStandup() (result *Standup) {
+	id, err := connection.Redis.Get(standupKey).Result()
 	log.Println(id, err)
 	if len(id) == 0 {
 		Standups.Pipe([]bson.M{{"$sample": bson.M{"size": 1}}}).One(&result)
-		err := connection.Redis.Set("panera:standup", result.ID.Hex(), 0).Err()
+		err := connection.Redis.Set(standupKey, result.ID.Hex(), 0).Err()
 		log.Println(err)
 	} else {
 		Standups.FindOne(id, &result)
@@ -47,8 +49,17 @@ func GetTodayStandup() (result Standup) {
 }
 
 // GetStandupList returns all standup records
-func GetStandupList() (results []Standup) {
+func GetStandupList() (results []*Standup) {
 	err := Standups.Find(bson.M{}).All(&results)
 	log.Println(err)
 	return results
+}
+
+// NewDayStandup sets today standup state done and clear the cache(redis)
+func NewDayStandup() error {
+	if err := GetTodayStandup().SetDone(); err != nil {
+		return err
+	}
+	_, err := connection.Redis.Del(standupKey).Result()
+	return err
 }
