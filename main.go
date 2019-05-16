@@ -19,8 +19,9 @@ func main() {
 	connection.Init()
 	entity.InitCollection()
 	template.Init()
+	port := os.Getenv("PORT")
 
-	log.Println("* Listening")
+	log.Println("* Listening on :" + port)
 	log.Println("Use Ctrl-C to stop")
-	http.ListenAndServe(":"+os.Getenv("PORT"), route.Router())
+	http.ListenAndServe(":"+port, route.Router())
 }

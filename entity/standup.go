@@ -45,3 +45,10 @@ func GetTodayStandup() (result Standup) {
 	}
 	return result
 }
+
+// GetStandupList returns all standup records
+func GetStandupList() (results []Standup) {
+	err := Standups.Find(bson.M{}).All(&results)
+	log.Println(err)
+	return results
+}

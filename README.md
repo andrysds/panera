@@ -38,6 +38,6 @@ Send a pull request from your fork branch. [How?](https://help.github.com/articl
   make run
   ```
 
-- Access the commands via web browser
+- Access via web browser
 
   http://localhost:9542/

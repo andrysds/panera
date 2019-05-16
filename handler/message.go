@@ -13,6 +13,8 @@ func Message(command string) string {
 		return birthday()
 	case "/standup":
 		return standup()
+	case "/standup_list":
+		return standupList()
 	}
 	return ""
 }
@@ -36,4 +38,19 @@ func standup() string {
 		"Yang dapat giliran untuk memimpin stand up hari ini adalah %s (%s)",
 		standup.User().Name, standup.User().Username,
 	)
+}
+
+func standupList() string {
+	standups := entity.GetStandupList()
+	message := "Stand up lead periode ini:"
+	for _, s := range standups {
+		message += "\n"
+		if s.State == "1" {
+			message += "`[x]` "
+		} else {
+			message += "`[ ]` "
+		}
+		message += s.User().Name
+	}
+	return message
 }
