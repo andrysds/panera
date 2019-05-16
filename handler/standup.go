@@ -34,7 +34,7 @@ func SetDone(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	err := entity.Standups.FindOne(id, &standup)
 	if err == nil {
-		err = standup.SetDone()
+		err = standup.SetState(entity.StandupStateDone)
 	}
 	afterStandupAction(w, r, "set-done", err)
 }

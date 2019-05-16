@@ -35,15 +35,25 @@ func birthday() string {
 }
 
 func standup() string {
-	standup := entity.GetTodayStandup()
-	return fmt.Sprintf(
-		"Yang dapat giliran untuk memimpin stand up hari ini adalah %s (%s)",
-		standup.User().Name, standup.User().Username,
-	)
+	standup, err := entity.GetTodayStandup()
+	if err == nil {
+		var user *entity.User
+		user, err = standup.User()
+		if err == nil {
+			return fmt.Sprintf(
+				"Yang dapat giliran untuk memimpin stand up hari ini adalah %s (%s)",
+				user.Name, user.Username,
+			)
+		}
+	}
+	return err.Error()
 }
 
 func standupList() string {
-	standups := entity.GetStandupList()
+	standups, err := entity.GetStandupList()
+	if err != nil {
+		return err.Error()
+	}
 	message := "Stand up lead periode ini:"
 	for _, s := range standups {
 		message += "\n"
@@ -52,7 +62,11 @@ func standupList() string {
 		} else {
 			message += "`[ ]` "
 		}
-		message += s.User().Name
+		user, err := s.User()
+		if err != nil {
+			return err.Error()
+		}
+		message += user.Name
 	}
 	return message
 }
