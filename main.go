@@ -25,6 +25,5 @@ func main() {
 	port := os.Getenv("PORT")
 	log.Println("* Listening on :" + port)
 	log.Println("Use Ctrl-C to stop")
-	go router.TelegramRouter()
-	http.ListenAndServe(":"+port, router.WebRouter())
+	http.ListenAndServe(":"+port, router.Router())
 }

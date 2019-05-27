@@ -5,13 +5,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/andrysds/panera/connection"
 	"github.com/andrysds/panera/handler"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
 
-// WebRouter return application http router
-func WebRouter() *chi.Mux {
+// Router return application http router
+func Router() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
@@ -21,12 +22,25 @@ func WebRouter() *chi.Mux {
 
 	username = os.Getenv("USERNAME")
 	password = os.Getenv("PASSWORD")
-	r.Use(authorize)
 
 	r.NotFound(handler.NotFound)
+	r.Get("/healthz", handler.Healthz)
+	if connection.Telegram != nil {
+		r.Post("/"+connection.Telegram.Token, handler.Message)
+	}
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/admin", http.StatusMovedPermanently)
+	})
+	r.Mount("/admin", adminRouter())
+
+	return r
+}
+
+func adminRouter() chi.Router {
+	r := chi.NewRouter()
+	r.Use(authorize)
 
 	r.Get("/", handler.Index)
-	r.Get("/healthz", handler.Healthz)
 	r.Get("/emulator", handler.Emulator)
 
 	r.Route("/users", func(r chi.Router) {
@@ -49,7 +63,6 @@ func WebRouter() *chi.Mux {
 			r.Get("/delete", handler.DeleteStandup)
 		})
 	})
-
 	return r
 }
 

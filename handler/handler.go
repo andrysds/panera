@@ -63,5 +63,5 @@ func renderError(w http.ResponseWriter, msg string) {
 }
 
 func redirectBack(w http.ResponseWriter, r *http.Request, path string) {
-	http.Redirect(w, r, path, 302)
+	http.Redirect(w, r, path, http.StatusFound)
 }
