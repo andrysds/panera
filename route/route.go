@@ -1,6 +1,8 @@
 package route
 
 import (
+	"net/http"
+	"os"
 	"time"
 
 	"github.com/andrysds/panera/handler"
@@ -16,6 +18,10 @@ func Router() *chi.Mux {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
+
+	username = os.Getenv("USERNAME")
+	password = os.Getenv("PASSWORD")
+	r.Use(authorize)
 
 	r.NotFound(handler.NotFound)
 
@@ -45,4 +51,18 @@ func Router() *chi.Mux {
 	})
 
 	return r
+}
+
+var username, password string
+
+func authorize(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		user, pass, _ := r.BasicAuth()
+		if username != user || password != pass {
+			w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
 }
