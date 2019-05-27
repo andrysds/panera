@@ -9,7 +9,11 @@ import (
 
 // CommandMessage handles telegram command messages
 func CommandMessage(update *tgbotapi.Update) {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, Command(update.Message.Command()))
+	cmd := update.Message.Command()
+	if cmd == "standup_new_day" && update.Message.Chat.ID != connection.MasterTelegramID {
+		return
+	}
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, Command(cmd))
 	connection.Telegram.Send(msg)
 }
 

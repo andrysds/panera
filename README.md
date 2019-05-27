@@ -14,7 +14,6 @@ Bukalapak PNR Squad Assistant
 ### Master Commands
 
 - /standup_new_day
-- /standup_new_period
 
 ## Contributing
 
