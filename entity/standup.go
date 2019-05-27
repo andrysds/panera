@@ -70,7 +70,7 @@ func GetNewStandup(container interface{}) error {
 // GetStandupList returns all standup records
 func GetStandupList() ([]*Standup, error) {
 	var results []*Standup
-	err := Standups.Find(bson.M{}).All(&results)
+	err := Standups.All("state", &results)
 	return results, err
 }
 
@@ -78,9 +78,15 @@ func GetStandupList() ([]*Standup, error) {
 func NewDayStandup() error {
 	standup, err := GetStandup()
 	if err == nil {
-		err = standup.SetState(StandupStateDone)
-		if err == nil {
-			_, err = connection.Redis.Del(StandupKey).Result()
+		if err = standup.SetState(StandupStateDone); err == nil {
+			if _, err = connection.Redis.Del(StandupKey).Result(); err == nil {
+				var standups []*Standup
+				if err = Standups.Find(bson.M{"state": StandupStateSkipped}).All(&standups); err == nil {
+					for _, s := range standups {
+						s.SetState(StandupStateUndone)
+					}
+				}
+			}
 		}
 	}
 	return err
@@ -90,23 +96,30 @@ func NewDayStandup() error {
 func NewPeriodStandup() error {
 	_, err := Standups.RemoveAll(bson.M{"state": StandupStateDone})
 	if err == nil {
-		var standups []*Standup
-		standups, err = GetStandupList()
+		users, err := AllUsers()
 		if err == nil {
-			for _, s := range standups {
-				if err := s.SetState(StandupStateUndone); err != nil {
+			for _, u := range users {
+				if err := AddUserToStandups(u.ID.Hex()); err != nil {
 					return err
-				}
-			}
-			users, err := AllUsers()
-			if err == nil {
-				for _, u := range users {
-					if err := AddUserToStandups(u.ID.Hex()); err != nil {
-						return err
-					}
 				}
 			}
 		}
 	}
 	return err
+}
+
+// SkipStandup sets today standup state skipped and return new standup
+func SkipStandup() (*Standup, *Standup, error) {
+	var standup *Standup
+	skipped, err := GetStandup()
+	if err == nil {
+		err = skipped.SetState(StandupStateSkipped)
+		if err == nil {
+			_, err = connection.Redis.Del(StandupKey).Result()
+			if err == nil {
+				standup, err = GetStandup()
+			}
+		}
+	}
+	return standup, skipped, err
 }

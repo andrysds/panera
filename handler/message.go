@@ -17,6 +17,8 @@ func Message(command string) string {
 		return standupList()
 	case "/standup_new_day":
 		return standupNewDay()
+	case "/standup_skip":
+		return standupSkip()
 	}
 	return ""
 }
@@ -57,8 +59,10 @@ func standupList() string {
 	message := "Stand up lead periode ini:"
 	for _, s := range standups {
 		message += "\n"
-		if s.State == "done" {
+		if s.State == entity.StandupStateDone {
 			message += "`[x]` "
+		} else if s.State == entity.StandupStateSkipped {
+			message += "`[s]` "
 		} else {
 			message += "`[ ]` "
 		}
@@ -76,4 +80,20 @@ func standupNewDay() string {
 		return err.Error()
 	}
 	return "standupNewDay ok"
+}
+
+func standupSkip() string {
+	standup, skipped, err := entity.SkipStandup()
+	if err == nil {
+		var standupUser, skippedUser *entity.User
+		if standupUser, err = standup.User(); err == nil {
+			if skippedUser, err = skipped.User(); err == nil {
+				return fmt.Sprintf(
+					"Karena %s tidak bisa, penggantinya %s (@%s)",
+					skippedUser.Name, standupUser.Name, standupUser.Username,
+				)
+			}
+		}
+	}
+	return err.Error()
 }
