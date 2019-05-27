@@ -9,12 +9,15 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-// Telegram represents Redis connection
 var (
+	// Telegram represents Telegram connection
 	Telegram *tgbotapi.BotAPI
 
-	MasterTelegramID   int64
-	SquadTelegramID    int64
+	// MasterTelegramID stores master ID from env
+	MasterTelegramID int64
+	// SquadTelegramID stores squad ID from env
+	SquadTelegramID int64
+	// BirthdayTelegramID stores birthday ID from env
 	BirthdayTelegramID int64
 )
 

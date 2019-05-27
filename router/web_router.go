@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-// Router return application http router
+// WebRouter return application http router
 func WebRouter() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)

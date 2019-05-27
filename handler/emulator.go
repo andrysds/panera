@@ -19,7 +19,7 @@ func Emulator(w http.ResponseWriter, r *http.Request) {
 			FormAction: "/emulator",
 		},
 		Command:  command,
-		Response: CommandMessage(command),
+		Response: Command(command),
 	}
 	template.Execute(w, "emulator.html", data)
 }

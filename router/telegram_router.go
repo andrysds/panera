@@ -18,7 +18,7 @@ func TelegramRouter() {
 			case isAddedToGroup(&u):
 				handler.GroupInvitationMessage(&u)
 			case u.Message.IsCommand():
-				handler.CommandMessage(u.Message.Command())
+				handler.CommandMessage(&u)
 			default:
 				handler.MasterMessage(&u)
 			}
