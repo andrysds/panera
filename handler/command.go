@@ -31,7 +31,7 @@ func birthday() string {
 	}
 	result := "Birthdays:\n"
 	for _, u := range users {
-		result += u.Birthday + " (" + u.Name + ")\n"
+		result += u.Birthday + " - " + u.Name + "\n"
 	}
 	return result
 }
