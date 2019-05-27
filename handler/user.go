@@ -50,7 +50,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		Name:     r.Form.Get("name"),
 		Username: r.Form.Get("username"),
 		Birthday: r.Form.Get("birthday"),
-		Role:     r.Form.Get("role"),
 	}
 	err := entity.Users.InsertOne(newUser)
 	afterUserAction(w, r, "create-user", err)
@@ -83,7 +82,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		Name:     r.Form.Get("name"),
 		Username: r.Form.Get("username"),
 		Birthday: r.Form.Get("birthday"),
-		Role:     r.Form.Get("role"),
 	}
 	err := entity.Users.UpdateOne(id, user)
 	afterUserAction(w, r, "update-user", err)

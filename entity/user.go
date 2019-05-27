@@ -13,7 +13,6 @@ type User struct {
 	Name     string
 	Username string
 	Birthday string
-	Role     string
 }
 
 // AllUsers returns all user records

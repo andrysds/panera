@@ -33,7 +33,6 @@
                                 <th>Name</th>
                                 <th>Username</th>
                                 <th>Birthday</th>
-                                <th>Role</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -44,7 +43,6 @@
                                 <td class="align-middle">{{ .Name }}</td>
                                 <td class="align-middle">{{ .Username }}</td>
                                 <td class="align-middle">{{ .Birthday }}</td>
-                                <td class="align-middle">{{ .Role }}</td>
                                 <td class="align-middle">
                                     <a href="/users/{{ .ID.Hex }}/add-to-standups" role="button" class="btn btn-success btn-sm">Add to Standup</a>
                                     <a href="/users/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
