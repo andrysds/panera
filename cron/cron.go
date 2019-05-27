@@ -29,6 +29,6 @@ func standupJob() {
 }
 
 func newDayStandupJob() {
-	msg := tgbotapi.NewMessage(connection.SquadTelegramID, handler.Command("standup_new_day"))
+	msg := tgbotapi.NewMessage(connection.MasterTelegramID, handler.Command("standup_new_day"))
 	connection.Telegram.Send(msg)
 }
