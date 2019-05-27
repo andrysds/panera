@@ -29,10 +29,10 @@
                             <label for="birthday">Birthday</label>
                             <input class="form-control" id="birthday" name="birthday" value="{{ .User.Birthday }}">
                         </div>
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <input class="form-control" id="role" name="role" value="{{ .User.Role }}">
-                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="active" name="active" value="active" {{ if .User.Active }} checked {{ end }}>
+                            <label class="form-check-label" for="active">Active?</label>
+                            </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

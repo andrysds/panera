@@ -96,8 +96,8 @@ func NewDayStandup() error {
 func NewPeriodStandup() error {
 	_, err := Standups.RemoveAll(bson.M{"state": StandupStateDone})
 	if err == nil {
-		users, err := AllUsers()
-		if err == nil {
+		var users []*User
+		if err = Users.Find(bson.M{"active": true}).All(&users); err == nil {
 			for _, u := range users {
 				if err := AddUserToStandups(u.ID.Hex()); err != nil {
 					return err

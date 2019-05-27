@@ -11,8 +11,8 @@ import (
 
 // Users is handler function for GET /users
 func Users(w http.ResponseWriter, r *http.Request) {
-	users, err := entity.AllUsers()
-	if err != nil {
+	var users []*entity.User
+	if err := entity.Users.All("birthday", &users); err != nil {
 		internalServerError(w, err)
 	} else {
 		tpltData := templateData{PageTitle: "Users"}
@@ -50,6 +50,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		Name:     r.Form.Get("name"),
 		Username: r.Form.Get("username"),
 		Birthday: r.Form.Get("birthday"),
+		Active:   r.Form.Get("active") == "active",
 	}
 	err := entity.Users.InsertOne(newUser)
 	afterUserAction(w, r, "create-user", err)
@@ -82,6 +83,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		Name:     r.Form.Get("name"),
 		Username: r.Form.Get("username"),
 		Birthday: r.Form.Get("birthday"),
+		Active:   r.Form.Get("active") == "active",
 	}
 	err := entity.Users.UpdateOne(id, user)
 	afterUserAction(w, r, "update-user", err)
