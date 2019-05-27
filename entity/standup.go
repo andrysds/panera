@@ -1,95 +1,125 @@
 package entity
 
 import (
-	"errors"
-	"fmt"
-	"strings"
-
-	"github.com/andrysds/panera/db"
+	"github.com/andrysds/panera/connection"
+	"github.com/globalsign/mgo/bson"
 )
 
-const StandupKey = "panera:standup"
+const (
+	// StandupKey is redis key for today standup cache
+	StandupKey = "panera:standup"
 
+	// StandupStateDone is state for done standup
+	StandupStateDone = "done"
+	// StandupStateSkipped is state for skipped standup
+	StandupStateSkipped = "skipped"
+	// StandupStateUndone is state for undone standup
+	StandupStateUndone = "undone"
+)
+
+// Standups represents standup collection
+var Standups *Collection
+
+// Standup represents standup document
 type Standup struct {
-	Name     string
-	Username string
-	State    string
-	Order    int
+	ID     bson.ObjectId `bson:"_id"`
+	UserID bson.ObjectId `bson:"user_id"`
+	State  string
 }
 
-func NewStandup(data string, order int) *Standup {
-	res := strings.Split(data, ":")
-	obj := &Standup{}
-	if len(res) == 3 {
-		obj.Name = res[0]
-		obj.Username = res[1]
-		obj.State = res[2]
-		obj.Order = order
-	}
-	return obj
+// User gets user object of the standup object
+func (s *Standup) User() (result *User, err error) {
+	err = Users.FindOne(s.UserID.Hex(), &result)
+	return result, err
 }
 
-func (self *Standup) Raw() string {
-	return fmt.Sprintf("%s:%s:%s", self.Name, self.Username, self.State)
+// SetState sets state info
+func (s *Standup) SetState(state string) error {
+	s.State = state
+	return Standups.UpdateOne(s.ID.Hex(), s)
 }
 
-func CurrentStandup() (*Standup, error) {
-	obj := &Standup{}
-	order, err := db.Redis.Get(StandupKey).Int64()
+// GetStandup returns current standup record
+func GetStandup() (*Standup, error) {
+	var result *Standup
+	id, err := connection.Redis.Get(StandupKey).Result()
 	if err != nil {
-		return nil, err
+		err = GetNewStandup(&result)
+		if err != nil && err.Error() == connection.MongoNotFoundErr {
+			if err = NewPeriodStandup(); err == nil {
+				err = GetNewStandup(&result)
+			}
+		}
+		if err == nil {
+			err = connection.Redis.Set(StandupKey, result.ID.Hex(), 0).Err()
+		}
+	} else {
+		err = Standups.FindOne(id, &result)
 	}
-
-	data, err := db.Redis.LRange(StandupListKey, order, order).Result()
-	if len(data) == 1 {
-		obj = NewStandup(data[0], int(order))
-	}
-	return obj, err
+	return result, err
 }
 
-func NextStandup(fromBeginning bool) (*Standup, *Standup, error) {
-	obj := &Standup{}
-	current, err := CurrentStandup()
-	if err != nil {
-		return obj, current, err
-	}
+// GetNewStandup pick random standup record from database
+func GetNewStandup(container interface{}) error {
+	return Standups.Pipe([]bson.M{
+		{"$match": bson.M{"state": "undone"}},
+		{"$sample": bson.M{"size": 1}},
+	}).One(container)
+}
 
-	objs, err := CurrentStandupList()
-	if err != nil {
-		return obj, current, err
-	}
+// GetStandupList returns all standup records
+func GetStandupList() ([]*Standup, error) {
+	var results []*Standup
+	err := Standups.All("state", &results)
+	return results, err
+}
 
-	i := current.Order + 1
-	if fromBeginning {
-		i = 0
-	}
-
-	for ; i < len(objs); i++ {
-		if objs[i].State != "1" {
-			_, err := db.Redis.Set(StandupKey, i, 0).Result()
-			return objs[i], current, err
+// NewDayStandup sets today standup state done and clear the cache(redis)
+func NewDayStandup() error {
+	standup, err := GetStandup()
+	if err == nil {
+		if err = standup.SetState(StandupStateDone); err == nil {
+			if _, err = connection.Redis.Del(StandupKey).Result(); err == nil {
+				var standups []*Standup
+				if err = Standups.Find(bson.M{"state": StandupStateSkipped}).All(&standups); err == nil {
+					for _, s := range standups {
+						s.SetState(StandupStateUndone)
+					}
+				}
+			}
 		}
 	}
-	return obj, current, errors.New(NotFoundMessage)
+	return err
 }
 
-func NewDayStandup() string {
-	current, err := CurrentStandup()
-	if err != nil {
-		return err.Error()
+// NewPeriodStandup reset standup data and setup new period standup
+func NewPeriodStandup() error {
+	_, err := Standups.RemoveAll(bson.M{"state": StandupStateDone})
+	if err == nil {
+		var users []*User
+		if err = Users.Find(bson.M{"active": true}).All(&users); err == nil {
+			for _, u := range users {
+				if err := AddUserToStandups(u.ID.Hex()); err != nil {
+					return err
+				}
+			}
+		}
 	}
+	return err
+}
 
-	current.State = "1"
-	if _, err := db.Redis.LSet(StandupListKey, int64(current.Order), current.Raw()).Result(); err != nil {
-		return err.Error()
+// SkipStandup sets today standup state skipped and return new standup
+func SkipStandup() (*Standup, *Standup, error) {
+	var standup *Standup
+	skipped, err := GetStandup()
+	if err == nil {
+		err = skipped.SetState(StandupStateSkipped)
+		if err == nil {
+			_, err = connection.Redis.Del(StandupKey).Result()
+			if err == nil {
+				standup, err = GetStandup()
+			}
+		}
 	}
-
-	if _, err := db.Redis.Set(StandupKey, 0, 0).Result(); err != nil {
-		return err.Error()
-	}
-
-	if _, _, err := NextStandup(true); err != nil {
-		return err.Error()
-	}
-	return "standup\\_new\\_day\ndone"
+	return standup, skipped, err
 }

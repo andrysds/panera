@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "base-head" }}
+        <title>{{ .PageTitle }} | Panera</title>
+    </head>
+    <body>
+        {{ template "header" }}
+        <main role="main">
+            <section class="jumbotron">
+                <div class="container">
+                    <div class="row vertical-center">
+                        <div class="col-10">
+                            <h1>{{ .PageTitle }}</h1>
+                        </div>
+                        <div class="col-2 text-right">
+                            <a href="/admin/users/new" role="button" class="btn btn-primary btn">Create</a>
+                        </div>
+                    </div>
+                </div>
+                {{ if .PastAction }}
+                <div class="container">
+                    <div class="alert alert-{{ .PastActionStatus }}" role="alert">
+                        action: {{ .PastAction }}; status: {{ .PastActionStatus }};
+                    </div>
+                </div>
+                {{ end }}
+                <div class="container">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Birthday</th>
+                                <th>Active</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range .Users }}
+                            <tr>
+                                <td class="align-middle">{{ .ID.Hex }}</td>
+                                <td class="align-middle">{{ .Name }}</td>
+                                <td class="align-middle">{{ .Username }}</td>
+                                <td class="align-middle">{{ .Birthday }}</td>
+                                <td class="align-middle">{{ .Active }}</td>
+                                <td class="align-middle">
+                                    <a href="/admin/users/{{ .ID.Hex }}/add-to-standups" role="button" class="btn btn-success btn-sm">Add to Standup</a>
+                                    <a href="/admin/users/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/admin/users/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        {{ template "js" }}
+    </body>
+</html>

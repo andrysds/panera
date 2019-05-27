@@ -1,72 +1,67 @@
 package handler
 
 import (
-	"log"
-	"strconv"
-	"strings"
+	"io"
+	"net/http"
 
-	"github.com/andrysds/panera/config"
-	"github.com/andrysds/panera/entity"
-	"gopkg.in/telegram-bot-api.v4"
+	"github.com/andrysds/panera/template"
 )
 
-func HandleUpdate(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	if update.Message == nil {
-		return
-	}
-	entity.LogMessage(update.Message.From.UserName, update.Message.Text)
-
-	switch {
-	case IsAddedToGroup(update):
-		HandleGroupInvitation(update, botAPI)
-
-	case update.Message.IsCommand():
-		switch update.Message.Command() {
-		// birthday
-		case "birthdays":
-			HandleBirthdays(update, botAPI)
-		case "birthday_kick":
-			HandleBirthdayKick(update, botAPI)
-		case "birthday_link":
-			HandleBirthdayLink(update, botAPI)
-		case "birthday_unban":
-			HandleBirthdayUnban(update, botAPI)
-
-		// standup
-		case "standup":
-			HandleStandup(update, botAPI)
-		case "standup_list":
-			HandleStandupList(update, botAPI)
-		case "standup_new_day":
-			HandleStandupNewDay(update, botAPI)
-		case "standup_new_period":
-			HandleStandupNewPeriod(update, botAPI)
-		case "standup_skip":
-			HandleStandupSkip(update, botAPI)
-		}
-
-	default:
-		HandleMasterMessage(update, botAPI)
-	}
+// Healthz is handler function for GET /healthz
+func Healthz(w http.ResponseWriter, _ *http.Request) {
+	io.WriteString(w, "OK!\n")
 }
 
-func IsFromMaster(update *tgbotapi.Update) bool {
-	return update.Message.Chat.ID == config.MasterID
+// NotFound is handler function for 404
+func NotFound(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	renderError(w, "404 page not found")
 }
 
-func HandleMasterMessage(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	if !IsFromMaster(update) {
-		return
-	}
+// Index is handler function for GET /
+func Index(w http.ResponseWriter, _ *http.Request) {
+	template.Execute(w, "index.html", nil)
+}
 
-	message := ""
-	if update.Message.ForwardFrom != nil {
-		message = strconv.Itoa(update.Message.ForwardFrom.ID)
+type templateData struct {
+	PageTitle        string
+	FormAction       string
+	PastAction       string
+	PastActionStatus string
+}
+
+func (t *templateData) setPastActionInfo(r *http.Request) {
+	t.PastAction = r.URL.Query().Get("past_action")
+	t.PastActionStatus = r.URL.Query().Get("past_action_status")
+}
+
+type afterActionOpts struct {
+	action       string
+	err          error
+	redirectPath string
+}
+
+func afterAction(w http.ResponseWriter, r *http.Request, opts afterActionOpts) {
+	if opts.err != nil {
+		internalServerError(w, opts.err)
 	} else {
-		message = strings.Replace(update.Message.Text, "<bq>", "`", -1)
-		update.Message.Chat.ID = config.SquadID
-		update.Message.MessageID = 0
+		status := "success"
+		if opts.err != nil {
+			status = "danger"
+		}
+		redirectBack(w, r, opts.redirectPath+"?past_action="+opts.action+"&past_action_status="+status)
 	}
-	msg, _ := botAPI.Send(entity.NewMessage(update, message))
-	log.Println(msg.Text)
+}
+
+func internalServerError(w http.ResponseWriter, err error) {
+	w.WriteHeader(http.StatusUnprocessableEntity)
+	renderError(w, err.Error())
+}
+
+func renderError(w http.ResponseWriter, msg string) {
+	template.Template.ExecuteTemplate(w, "error.html", msg)
+}
+
+func redirectBack(w http.ResponseWriter, r *http.Request, path string) {
+	http.Redirect(w, r, path, http.StatusFound)
 }

@@ -1,75 +1,75 @@
 package handler
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/andrysds/clarity"
-	"github.com/andrysds/panera/config"
 	"github.com/andrysds/panera/entity"
-	"gopkg.in/telegram-bot-api.v4"
+	"github.com/andrysds/panera/template"
+	"github.com/globalsign/mgo/bson"
+	"github.com/go-chi/chi"
 )
 
-func HandleStandup(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	standup, err := entity.CurrentStandup()
-	clarity.PrintIfError(err, "error on get standup")
-
-	messageTemplate := "Yuk stand up! Yang dapat giliran untuk memimpin stand up hari ini adalah _%s_ (@%s)"
-	message := fmt.Sprintf(messageTemplate, standup.Name, standup.Username)
-	botAPI.Send(entity.NewMessage(update, message))
-}
-
-func HandleStandupList(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	standups, err := entity.CurrentStandupList()
-	clarity.PrintIfError(err, "error on get standup list")
-
-	message := "Stand up lead periode ini:"
-	for _, s := range standups {
-		message += "\n"
-		if s.State == "1" {
-			message += "`[x]` "
-		} else {
-			message += "`[ ]` "
-		}
-		message += s.Name
-	}
-	botAPI.Send(entity.NewMessage(update, message))
-}
-
-func HandleStandupNewDay(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	if !IsFromMaster(update) {
-		return
-	}
-
-	result := entity.NewDayStandup()
-	if result == entity.NotFoundMessage {
-		HandleStandupNewPeriod(update, botAPI)
+// Standups is handler function for GET /admin/standups
+func Standups(w http.ResponseWriter, r *http.Request) {
+	var standups []entity.Standup
+	err := entity.Standups.All("state", &standups)
+	if err != nil {
+		internalServerError(w, err)
 	} else {
-		botAPI.Send(entity.NewMessage(update, result))
+		tpltData := templateData{PageTitle: "Standups"}
+		tpltData.setPastActionInfo(r)
+		data := struct {
+			templateData
+			Standups []entity.Standup
+		}{
+			templateData: tpltData,
+			Standups:     standups,
+		}
+		template.Execute(w, "standup.html", data)
 	}
 }
 
-func HandleStandupNewPeriod(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	if !IsFromMaster(update) {
-		return
+// EditStandup is handler function for GET /admin/standups/:id
+func EditStandup(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	var standup entity.Standup
+	entity.Standups.FindOne(id, &standup)
+	user, _ := standup.User()
+	data := struct {
+		templateData
+		Standup entity.Standup
+		User    *entity.User
+	}{
+		templateData: templateData{
+			PageTitle:  "Edit Standup",
+			FormAction: "/admin/standups/" + id,
+		},
+		Standup: standup,
+		User:    user,
 	}
-
-	result := entity.NewPeriodStandupList()
-	botAPI.Send(entity.NewMessage(update, result))
-
-	update.Message.Chat.ID = config.SquadID
-	HandleStandupList(update, botAPI)
+	template.Execute(w, "standup-form.html", data)
 }
 
-func HandleStandupSkip(update *tgbotapi.Update, botAPI entity.BotAPI) {
-	standup, current, err := entity.NextStandup(false)
-	clarity.PrintIfError(err, "error on skipping standup")
-
-	message := ""
-	if err == nil {
-		message = "Karena %s tidak bisa, penggantinya _%s_ (@%s)"
-		message = fmt.Sprintf(message, current.Name, standup.Name, standup.Username)
-	} else if err.Error() == entity.NotFoundMessage {
-		message = "Waduh ga ada gantinya lagi nih!"
+// UpdateStandup is handler function for POST /admin/standups/:id
+func UpdateStandup(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := chi.URLParam(r, "id")
+	standup := entity.Standup{
+		ID:     bson.ObjectIdHex(id),
+		UserID: bson.ObjectIdHex(r.Form.Get("user_id")),
+		State:  r.Form.Get("state"),
 	}
-	botAPI.Send(entity.NewMessage(update, message))
+	err := entity.Standups.UpdateOne(id, standup)
+	afterStandupAction(w, r, "update-standup", err)
+}
+
+// DeleteStandup is handler function for GET /admin/standups/:id/delete
+func DeleteStandup(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	err := entity.Standups.RemoveOne(id)
+	afterStandupAction(w, r, "delete-standup", err)
+}
+
+func afterStandupAction(w http.ResponseWriter, r *http.Request, action string, err error) {
+	afterAction(w, r, afterActionOpts{action, err, "/admin/standups"})
 }

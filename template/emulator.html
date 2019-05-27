@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "base-head" }}
+        <title>{{ .PageTitle }} | Panera</title>
+    </head>
+    <body>
+        {{ template "header" }}
+        <main role="main">
+            <section class="jumbotron">
+                <div class="container">
+                    <div class="row vertical-center">
+                        <div class="col-10">
+                            <h1>{{ .PageTitle }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <form method="GET" action="{{ .FormAction }}">
+                        <div class="form-group">
+                            <label for="command">Command</label>
+                            <textarea class="form-control" id="command" name="command">{{ .Command }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="response">Response</label>
+                            <textarea class="form-control" id="response" rows="20" disabled>{{ .Response }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+        {{ template "js" }}
+    </body>
+</html>

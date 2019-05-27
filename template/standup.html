@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "base-head" }}
+        <title>{{ .PageTitle }} | Panera</title>
+    </head>
+    <body>
+        {{ template "header" }}
+        <main role="main">
+            <section class="jumbotron">
+                <div class="container">
+                    <div class="row vertical-center">
+                        <div class="col-10">
+                            <h1>{{ .PageTitle }}</h1>
+                        </div>
+                    </div>
+                </div>
+                {{ if .PastAction }}
+                <div class="container">
+                    <div class="alert alert-{{ .PastActionStatus }}" role="alert">
+                        action: {{ .PastAction }}; status: {{ .PastActionStatus }};
+                    </div>
+                </div>
+                {{ end }}
+                <div class="container">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>State</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range .Standups }}
+                            <tr>
+                                <td class="align-middle">{{ .ID.Hex }}</td>
+                                <td class="align-middle">{{ .User.Name }}</td>
+                                <td class="align-middle">{{ .State }}</td>
+                                <td class="align-middle">
+                                    <a href="/admin/standups/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/admin/standups/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        {{ template "js" }}
+    </body>
+</html>

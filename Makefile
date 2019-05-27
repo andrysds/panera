@@ -1,5 +1,7 @@
 all: pretty test build run
 
+quick: pretty run
+
 pretty:
 	gofmt -w .
 test:
