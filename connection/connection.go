@@ -4,4 +4,5 @@ package connection
 func Init() {
 	InitMongoDB()
 	InitRedis()
+	InitTelegram()
 }
