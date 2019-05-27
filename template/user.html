@@ -14,7 +14,7 @@
                             <h1>{{ .PageTitle }}</h1>
                         </div>
                         <div class="col-2 text-right">
-                            <a href="/users/new" role="button" class="btn btn-primary btn">Create</a>
+                            <a href="/admin/users/new" role="button" class="btn btn-primary btn">Create</a>
                         </div>
                     </div>
                 </div>
@@ -46,9 +46,9 @@
                                 <td class="align-middle">{{ .Birthday }}</td>
                                 <td class="align-middle">{{ .Active }}</td>
                                 <td class="align-middle">
-                                    <a href="/users/{{ .ID.Hex }}/add-to-standups" role="button" class="btn btn-success btn-sm">Add to Standup</a>
-                                    <a href="/users/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="/users/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="/admin/users/{{ .ID.Hex }}/add-to-standups" role="button" class="btn btn-success btn-sm">Add to Standup</a>
+                                    <a href="/admin/users/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/admin/users/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
                             {{end}}

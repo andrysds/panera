@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
-// Users is handler function for GET /users
+// Users is handler function for GET /admin/users
 func Users(w http.ResponseWriter, r *http.Request) {
 	var users []*entity.User
 	if err := entity.Users.All("birthday", &users); err != nil {
@@ -28,7 +28,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// NewUser is handler function for GET /users/new
+// NewUser is handler function for GET /admin/users/new
 func NewUser(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		templateData
@@ -36,13 +36,13 @@ func NewUser(w http.ResponseWriter, r *http.Request) {
 	}{
 		templateData: templateData{
 			PageTitle:  "Create User",
-			FormAction: "/users",
+			FormAction: "/admin/users",
 		},
 	}
 	template.Execute(w, "user-form.html", data)
 }
 
-// CreateUser is handler function for POST /users
+// CreateUser is handler function for POST /admin/users
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	newUser := entity.User{
@@ -56,7 +56,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	afterUserAction(w, r, "create-user", err)
 }
 
-// EditUser is handler function for GET /users/:id
+// EditUser is handler function for GET /admin/users/:id
 func EditUser(w http.ResponseWriter, r *http.Request) {
 	var user entity.User
 	id := chi.URLParam(r, "id")
@@ -67,14 +67,14 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 	}{
 		templateData: templateData{
 			PageTitle:  "Edit User",
-			FormAction: "/users/" + id,
+			FormAction: "/admin/users/" + id,
 		},
 		User: user,
 	}
 	template.Execute(w, "user-form.html", data)
 }
 
-// UpdateUser is handler function for POST /users/:id
+// UpdateUser is handler function for POST /admin/users/:id
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	id := chi.URLParam(r, "id")
@@ -89,7 +89,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	afterUserAction(w, r, "update-user", err)
 }
 
-// DeleteUser is handler function for GET /users/:id/delete
+// DeleteUser is handler function for GET /admin/users/:id/delete
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	err := entity.Users.RemoveOne(id)
@@ -107,5 +107,5 @@ func AddToStandups(w http.ResponseWriter, r *http.Request) {
 }
 
 func afterUserAction(w http.ResponseWriter, r *http.Request, action string, err error) {
-	afterAction(w, r, afterActionOpts{action, err, "/users"})
+	afterAction(w, r, afterActionOpts{action, err, "/admin/users"})
 }

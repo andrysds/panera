@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
-// Standups is handler function for GET /standups
+// Standups is handler function for GET /admin/standups
 func Standups(w http.ResponseWriter, r *http.Request) {
 	var standups []entity.Standup
 	err := entity.Standups.All("state", &standups)
@@ -29,7 +29,7 @@ func Standups(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// EditStandup is handler function for GET /standups/:id
+// EditStandup is handler function for GET /admin/standups/:id
 func EditStandup(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	var standup entity.Standup
@@ -42,7 +42,7 @@ func EditStandup(w http.ResponseWriter, r *http.Request) {
 	}{
 		templateData: templateData{
 			PageTitle:  "Edit Standup",
-			FormAction: "/standups/" + id,
+			FormAction: "/admin/standups/" + id,
 		},
 		Standup: standup,
 		User:    user,
@@ -50,7 +50,7 @@ func EditStandup(w http.ResponseWriter, r *http.Request) {
 	template.Execute(w, "standup-form.html", data)
 }
 
-// UpdateStandup is handler function for POST /standups/:id
+// UpdateStandup is handler function for POST /admin/standups/:id
 func UpdateStandup(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	id := chi.URLParam(r, "id")
@@ -63,7 +63,7 @@ func UpdateStandup(w http.ResponseWriter, r *http.Request) {
 	afterStandupAction(w, r, "update-standup", err)
 }
 
-// DeleteStandup is handler function for GET /standups/:id/delete
+// DeleteStandup is handler function for GET /admin/standups/:id/delete
 func DeleteStandup(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	err := entity.Standups.RemoveOne(id)
@@ -71,5 +71,5 @@ func DeleteStandup(w http.ResponseWriter, r *http.Request) {
 }
 
 func afterStandupAction(w http.ResponseWriter, r *http.Request, action string, err error) {
-	afterAction(w, r, afterActionOpts{action, err, "/standups"})
+	afterAction(w, r, afterActionOpts{action, err, "/admin/standups"})
 }

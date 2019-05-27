@@ -6,7 +6,7 @@ import (
 	"github.com/andrysds/panera/template"
 )
 
-// Emulator is handler function for GET /emulator
+// Emulator is handler function for GET /admin/emulator
 func Emulator(w http.ResponseWriter, r *http.Request) {
 	command := r.URL.Query().Get("command")
 	data := struct {
@@ -16,7 +16,7 @@ func Emulator(w http.ResponseWriter, r *http.Request) {
 	}{
 		templateData: templateData{
 			PageTitle:  "Emulator",
-			FormAction: "/emulator",
+			FormAction: "/admin/emulator",
 		},
 		Command:  command,
 		Response: Command(command),

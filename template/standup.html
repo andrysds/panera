@@ -39,8 +39,8 @@
                                 <td class="align-middle">{{ .User.Name }}</td>
                                 <td class="align-middle">{{ .State }}</td>
                                 <td class="align-middle">
-                                    <a href="/standups/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="/standups/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="/admin/standups/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/admin/standups/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
                             {{end}}
