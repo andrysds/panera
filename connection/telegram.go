@@ -33,6 +33,7 @@ func InitTelegram() {
 
 	var err error
 	Telegram, err = tgbotapi.NewBotAPI(token)
+	Telegram.Debug = true
 	clarity.PanicIfError(err, "error on creating telegram bot api connection")
 	log.Printf("* Authorized on account %s\n", Telegram.Self.UserName)
 
