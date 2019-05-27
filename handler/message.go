@@ -2,22 +2,25 @@ package handler
 
 import (
 	"fmt"
+	"strconv"
 
+	"github.com/andrysds/panera/connection"
 	"github.com/andrysds/panera/entity"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-// Message is router function for message
-func Message(command string) string {
+// CommandMessage handles telegram command messages
+func CommandMessage(command string) string {
 	switch command {
-	case "/birthdays":
+	case "birthdays":
 		return birthday()
-	case "/standup":
+	case "standup":
 		return standup()
-	case "/standup_list":
+	case "standup_list":
 		return standupList()
-	case "/standup_new_day":
+	case "standup_new_day":
 		return standupNewDay()
-	case "/standup_skip":
+	case "standup_skip":
 		return standupSkip()
 	}
 	return ""
@@ -96,4 +99,24 @@ func standupSkip() string {
 		}
 	}
 	return err.Error()
+}
+
+// GroupInvitationMessage handles when there is group invitation event
+func GroupInvitationMessage(update *tgbotapi.Update) {
+	msgTxt := "I was invited to " + strconv.FormatInt(update.Message.Chat.ID, 10)
+	msg := tgbotapi.NewMessage(connection.MasterTelegramID, msgTxt)
+	connection.Telegram.Send(msg)
+}
+
+// MasterMessage handles messages from master
+func MasterMessage(update *tgbotapi.Update) {
+	if update.Message.Chat.ID == connection.MasterTelegramID {
+		var msg tgbotapi.MessageConfig
+		if update.Message.ForwardFrom != nil {
+			msg = tgbotapi.NewMessage(connection.MasterTelegramID, strconv.Itoa(update.Message.ForwardFrom.ID))
+		} else {
+			msg = tgbotapi.NewMessage(connection.SquadTelegramID, update.Message.Text)
+		}
+		connection.Telegram.Send(msg)
+	}
 }

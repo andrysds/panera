@@ -1,4 +1,4 @@
-package route
+package router
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ import (
 )
 
 // Router return application http router
-func Router() *chi.Mux {
+func WebRouter() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
