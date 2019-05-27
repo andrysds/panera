@@ -35,7 +35,7 @@ func birthday() string {
 }
 
 func standup() string {
-	standup, err := entity.GetTodayStandup()
+	standup, err := entity.GetStandup()
 	if err == nil {
 		var user *entity.User
 		user, err = standup.User()
@@ -75,5 +75,5 @@ func standupNewDay() string {
 	if err := entity.NewDayStandup(); err != nil {
 		return err.Error()
 	}
-	return "ok"
+	return "standupNewDay ok"
 }

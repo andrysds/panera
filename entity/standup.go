@@ -42,15 +42,17 @@ func (s *Standup) SetState(state string) error {
 	return Standups.UpdateOne(s.ID.Hex(), s)
 }
 
-// GetTodayStandup pick one random standup record
-func GetTodayStandup() (*Standup, error) {
+// GetStandup returns current standup record
+func GetStandup() (*Standup, error) {
 	var result *Standup
 	id, err := connection.Redis.Get(StandupKey).Result()
 	if err != nil {
-		err = Standups.Pipe([]bson.M{
-			{"$match": bson.M{"state": "undone"}},
-			{"$sample": bson.M{"size": 1}},
-		}).One(&result)
+		err = GetNewStandup(&result)
+		if err != nil && err.Error() == connection.MongoNotFoundErr {
+			if err = NewPeriodStandup(); err == nil {
+				err = GetNewStandup(&result)
+			}
+		}
 		if err == nil {
 			err = connection.Redis.Set(StandupKey, result.ID.Hex(), 0).Err()
 		}
@@ -58,6 +60,14 @@ func GetTodayStandup() (*Standup, error) {
 		err = Standups.FindOne(id, &result)
 	}
 	return result, err
+}
+
+// GetNewStandup pick random standup record from database
+func GetNewStandup(container interface{}) error {
+	return Standups.Pipe([]bson.M{
+		{"$match": bson.M{"state": "undone"}},
+		{"$sample": bson.M{"size": 1}},
+	}).One(container)
 }
 
 // GetStandupList returns all standup records
@@ -69,11 +79,36 @@ func GetStandupList() ([]*Standup, error) {
 
 // NewDayStandup sets today standup state done and clear the cache(redis)
 func NewDayStandup() error {
-	standup, err := GetTodayStandup()
+	standup, err := GetStandup()
 	if err == nil {
 		err = standup.SetState(StandupStateDone)
 		if err == nil {
 			_, err = connection.Redis.Del(StandupKey).Result()
+		}
+	}
+	return err
+}
+
+// NewPeriodStandup reset standup data and setup new period standup
+func NewPeriodStandup() error {
+	_, err := Standups.RemoveAll(bson.M{"state": StandupStateDone})
+	if err == nil {
+		var standups []*Standup
+		standups, err = GetStandupList()
+		if err == nil {
+			for _, s := range standups {
+				if err := s.SetState(StandupStateUndone); err != nil {
+					return err
+				}
+			}
+			users, err := AllUsers()
+			if err == nil {
+				for _, u := range users {
+					if err := AddUserToStandups(u.ID.Hex()); err != nil {
+						return err
+					}
+				}
+			}
 		}
 	}
 	return err

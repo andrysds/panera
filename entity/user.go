@@ -1,6 +1,10 @@
 package entity
 
-import "github.com/globalsign/mgo/bson"
+import (
+	"time"
+
+	"github.com/globalsign/mgo/bson"
+)
 
 // Users represent user collection
 var Users *Collection
@@ -12,4 +16,21 @@ type User struct {
 	Username string
 	Birthday string
 	Role     string
+}
+
+// AllUsers returns all user records
+func AllUsers() (users []*User, err error) {
+	err = Users.All("birthday", &users)
+	return users, err
+}
+
+// AddUserToStandups adds user to standup records
+func AddUserToStandups(id string) error {
+	newStandup := Standup{
+		ID:        bson.NewObjectId(),
+		UserID:    bson.ObjectIdHex(id),
+		State:     "undone",
+		Timestamp: time.Now(),
+	}
+	return Standups.InsertOne(newStandup)
 }

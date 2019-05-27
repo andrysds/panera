@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/template"
@@ -12,8 +11,7 @@ import (
 
 // Users is handler function for GET /users
 func Users(w http.ResponseWriter, r *http.Request) {
-	var users []entity.User
-	err := entity.Users.All("birthday", &users)
+	users, err := entity.AllUsers()
 	if err != nil {
 		internalServerError(w, err)
 	} else {
@@ -21,7 +19,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 		tpltData.setPastActionInfo(r)
 		data := struct {
 			templateData
-			Users []entity.User
+			Users []*entity.User
 		}{
 			templateData: tpltData,
 			Users:        users,
@@ -104,13 +102,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 // AddToStandups adds new standups with given user ID
 func AddToStandups(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	newStandup := entity.Standup{
-		ID:        bson.NewObjectId(),
-		UserID:    bson.ObjectIdHex(id),
-		State:     "undone",
-		Timestamp: time.Now(),
-	}
-	err := entity.Standups.InsertOne(newStandup)
+	err := entity.AddUserToStandups(id)
 	afterUserAction(w, r, "add-to-standups", err)
 }
 

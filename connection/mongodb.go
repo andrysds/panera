@@ -19,3 +19,6 @@ func InitMongoDB() {
 	MongoDB = session.DB("")
 	log.Println("* MongoDB initialized")
 }
+
+// MongoNotFoundErr is message for not found error from mongo
+const MongoNotFoundErr = "not found"
