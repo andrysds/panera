@@ -18,7 +18,7 @@ type User struct {
 
 // AllUsers returns all user records
 func AllUsers() (users []*User, err error) {
-	err = Users.All("birthday", &users)
+	err = Users.All("name", &users)
 	return users, err
 }
 

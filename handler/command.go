@@ -25,7 +25,7 @@ func Command(command string) string {
 
 func birthday() string {
 	var users []entity.User
-	err := entity.Users.All("birthday", &users)
+	err := entity.Users.All("name", &users)
 	if err != nil {
 		return err.Error()
 	}

@@ -12,7 +12,7 @@ import (
 // Users is handler function for GET /admin/users
 func Users(w http.ResponseWriter, r *http.Request) {
 	var users []*entity.User
-	if err := entity.Users.All("birthday", &users); err != nil {
+	if err := entity.Users.All("name", &users); err != nil {
 		internalServerError(w, err)
 	} else {
 		tpltData := templateData{PageTitle: "Users"}
