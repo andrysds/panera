@@ -29,7 +29,6 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>State</th>
-                                <th>Timestamp</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -39,9 +38,7 @@
                                 <td class="align-middle">{{ .ID.Hex }}</td>
                                 <td class="align-middle">{{ .User.Name }}</td>
                                 <td class="align-middle">{{ .State }}</td>
-                                <td class="align-middle">{{ .Timestamp }}</td>
                                 <td class="align-middle">
-                                    <a href="/standups/{{ .ID.Hex }}/set-done" role="button" class="btn btn-success btn-sm">Done</a>
                                     <a href="/standups/{{ .ID.Hex }}/edit" role="button" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="/standups/{{ .ID.Hex }}/delete" role="button" class="btn btn-danger btn-sm">Delete</a>
                                 </td>

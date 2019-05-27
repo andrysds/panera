@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"time"
-
 	"github.com/globalsign/mgo/bson"
 )
 
@@ -27,10 +25,9 @@ func AllUsers() (users []*User, err error) {
 // AddUserToStandups adds user to standup records
 func AddUserToStandups(id string) error {
 	newStandup := Standup{
-		ID:        bson.NewObjectId(),
-		UserID:    bson.ObjectIdHex(id),
-		State:     "undone",
-		Timestamp: time.Now(),
+		ID:     bson.NewObjectId(),
+		UserID: bson.ObjectIdHex(id),
+		State:  "undone",
 	}
 	return Standups.InsertOne(newStandup)
 }

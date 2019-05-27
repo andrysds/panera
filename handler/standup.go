@@ -5,13 +5,14 @@ import (
 
 	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/template"
+	"github.com/globalsign/mgo/bson"
 	"github.com/go-chi/chi"
 )
 
 // Standups is handler function for GET /standups
 func Standups(w http.ResponseWriter, r *http.Request) {
 	var standups []entity.Standup
-	err := entity.Standups.All("timestamp", &standups)
+	err := entity.Standups.All("state", &standups)
 	if err != nil {
 		internalServerError(w, err)
 	} else {
@@ -28,15 +29,38 @@ func Standups(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// SetDone is handler function for POST /standups/:id
-func SetDone(w http.ResponseWriter, r *http.Request) {
-	var standup entity.Standup
+// EditStandup is handler function for GET /standups/:id
+func EditStandup(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	err := entity.Standups.FindOne(id, &standup)
-	if err == nil {
-		err = standup.SetState(entity.StandupStateDone)
+	var standup entity.Standup
+	entity.Standups.FindOne(id, &standup)
+	user, _ := standup.User()
+	data := struct {
+		templateData
+		Standup entity.Standup
+		User    *entity.User
+	}{
+		templateData: templateData{
+			PageTitle:  "Edit Standup",
+			FormAction: "/standups/" + id,
+		},
+		Standup: standup,
+		User:    user,
 	}
-	afterStandupAction(w, r, "set-done", err)
+	template.Execute(w, "standup-form.html", data)
+}
+
+// UpdateStandup is handler function for POST /standups/:id
+func UpdateStandup(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	id := chi.URLParam(r, "id")
+	standup := entity.Standup{
+		ID:     bson.ObjectIdHex(id),
+		UserID: bson.ObjectIdHex(r.Form.Get("user_id")),
+		State:  r.Form.Get("state"),
+	}
+	err := entity.Standups.UpdateOne(id, standup)
+	afterStandupAction(w, r, "update-standup", err)
 }
 
 // DeleteStandup is handler function for GET /standups/:id/delete

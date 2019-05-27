@@ -38,7 +38,8 @@ func Router() *chi.Mux {
 	r.Route("/standups", func(r chi.Router) {
 		r.Get("/", handler.Standups)
 		r.Route("/{id}", func(r chi.Router) {
-			r.Get("/set-done", handler.SetDone)
+			r.Get("/edit", handler.EditStandup)
+			r.Post("/", handler.UpdateStandup)
 			r.Get("/delete", handler.DeleteStandup)
 		})
 	})

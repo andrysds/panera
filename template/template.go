@@ -21,5 +21,7 @@ func Init() {
 
 // Execute applies the template
 func Execute(w io.Writer, name string, data interface{}) {
-	Template.ExecuteTemplate(w, name, data)
+	if err := Template.ExecuteTemplate(w, name, data); err != nil {
+		log.Println(err)
+	}
 }

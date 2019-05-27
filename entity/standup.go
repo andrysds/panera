@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"time"
-
 	"github.com/andrysds/panera/connection"
 	"github.com/globalsign/mgo/bson"
 )
@@ -24,10 +22,9 @@ var Standups *Collection
 
 // Standup represents standup document
 type Standup struct {
-	ID        bson.ObjectId `bson:"_id"`
-	UserID    bson.ObjectId `bson:"user_id"`
-	State     string
-	Timestamp time.Time
+	ID     bson.ObjectId `bson:"_id"`
+	UserID bson.ObjectId `bson:"user_id"`
+	State  string
 }
 
 // User gets user object of the standup object
