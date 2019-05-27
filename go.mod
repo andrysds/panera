@@ -9,6 +9,7 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
+	github.com/robfig/cron v1.1.0
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/subosito/gotenv v1.1.1
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect

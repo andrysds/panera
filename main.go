@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/andrysds/panera/connection"
+	"github.com/andrysds/panera/cron"
 	"github.com/andrysds/panera/entity"
 	"github.com/andrysds/panera/router"
 	"github.com/andrysds/panera/template"
@@ -18,6 +19,7 @@ func main() {
 	gotenv.Load()
 	connection.Init()
 	entity.InitCollection()
+	cron.Init()
 	template.Init()
 
 	port := os.Getenv("PORT")
