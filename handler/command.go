@@ -89,7 +89,7 @@ func standupSkip() string {
 		if standupUser, err = standup.User(); err == nil {
 			if skippedUser, err = skipped.User(); err == nil {
 				return fmt.Sprintf(
-					"Karena %s tidak bisa, penggantinya %s (@%s)",
+					"Karena %s tidak bisa, penggantinya %s (%s)",
 					skippedUser.Name, standupUser.Name, standupUser.Username,
 				)
 			}
