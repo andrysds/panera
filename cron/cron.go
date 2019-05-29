@@ -2,6 +2,10 @@ package cron
 
 import (
 	"log"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/andrysds/panera/connection"
 	"github.com/andrysds/panera/handler"
@@ -24,11 +28,21 @@ func Init() {
 }
 
 func standupJob() {
-	msg := tgbotapi.NewMessage(connection.SquadTelegramID, handler.Command("standup"))
-	connection.Telegram.Send(msg)
+	if !isHoliday() {
+		msg := tgbotapi.NewMessage(connection.SquadTelegramID, handler.Command("standup"))
+		connection.Telegram.Send(msg)
+	}
 }
 
 func newDayStandupJob() {
-	msg := tgbotapi.NewMessage(connection.MasterTelegramID, handler.Command("standup_new_day"))
-	connection.Telegram.Send(msg)
+	if !isHoliday() {
+		msg := tgbotapi.NewMessage(connection.MasterTelegramID, handler.Command("standup_new_day"))
+		connection.Telegram.Send(msg)
+	}
+}
+
+func isHoliday() bool {
+	holidays := os.Getenv("HOLIDAYS")
+	day := strconv.Itoa(time.Now().Day())
+	return strings.Contains(holidays, day)
 }
