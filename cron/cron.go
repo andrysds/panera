@@ -3,7 +3,6 @@ package cron
 import (
 	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -43,6 +42,6 @@ func newDayStandupJob() {
 
 func isHoliday() bool {
 	holidays := os.Getenv("HOLIDAYS")
-	day := strconv.Itoa(time.Now().Day())
+	day := time.Now().Format("02")
 	return strings.Contains(holidays, day)
 }
